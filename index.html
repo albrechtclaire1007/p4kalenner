@@ -249,7 +249,7 @@
     }
     .g1-hotspots{
       position:absolute;
-      inset:18% 5% 10% 5%; /* fine-tune if needed */
+      inset:24% 5% 10% 5%; /* moved grid a bit further down */
       display:grid;
       grid-template-columns:repeat(7,1fr);
       grid-template-rows:repeat(6,1fr);
@@ -266,7 +266,7 @@
       align-items:flex-start;
       justify-content:flex-end;
       font-size:0.6rem;
-      opacity:0; /* set to .5 for debug */
+      opacity:0; /* set to .5 for debugging */
       pointer-events:none;
     }
     .g1-cell.correct{
@@ -403,10 +403,9 @@
       border-color:var(--purple-dark);
       box-shadow:0 0 0 2px rgba(108,74,163,0.2);
     }
-    .g4-slot{
-      margin-top:2px;
-      font-size:0.75rem;
-      opacity:0.8;
+    .g4-item.matched{
+      background:var(--ok);
+      border-color:#169451;
     }
     .g4-cards{
       display:flex;
@@ -593,7 +592,7 @@
         <div id="g5Prompt" class="g5-prompt"></div>
         <div class="g5-input-row">
           <input id="g5Input" type="text" autocomplete="off"
-                 placeholder="Den dräizéngte Mäerz ..." />
+                 placeholder="Den éischte Januar ..." />
         </div>
         <div class="g5-keyboard" id="g5Keyboard"></div>
         <button id="g5CheckBtn" class="primary">Kontrolléier</button>
@@ -650,6 +649,14 @@
   topNext.addEventListener('click', ()=>{
     if(currentGameIndex<games.length-1) setGame(currentGameIndex+1);
   });
+
+  /* small helper */
+  function shuffle(array){
+    return array
+      .map(v=>({v, sort:Math.random()}))
+      .sort((a,b)=>a.sort-b.sort)
+      .map(({v})=>v);
+  }
 
   /* ------------ GAME 1: Lauschter & Klick ------------ */
   const AUDIO_BASE_URL =
@@ -737,62 +744,65 @@
   const g2NextBtn = document.getElementById('g2NextBtn');
 
   const g2Tasks = [
-    {text:"Den éischten Januar", correct:"01.01.",
+    {text:"Den éischte Januar",   correct:"01.01.",
       others:["10.01.","01.10.","11.01.","31.01."]},
-    {text:"Den zweeten Januar", correct:"02.01.",
+    {text:"Den zweete Januar",   correct:"02.01.",
       others:["20.01.","02.10.","12.01.","21.01."]},
-    {text:"Den drëtten Februar", correct:"03.02.",
+    {text:"Den drëtte Februar",  correct:"03.02.",
       others:["02.03.","30.02.","13.02.","03.12."]},
-    {text:"De véierte Mäerz", correct:"04.03.",
+    {text:"De véierte Mäerz",    correct:"04.03.",
       others:["03.04.","14.03.","04.05.","24.03."]},
-    {text:"De fënneften Abrëll", correct:"05.04.",
+    {text:"De fënnefte Abrëll",  correct:"05.04.",
       others:["04.05.","15.04.","05.06.","25.04."]},
-    {text:"De sechsten Mee", correct:"06.05.",
+    {text:"De sechste Mee",      correct:"06.05.",
       others:["05.06.","16.05.","06.03.","26.05."]},
-    {text:"De siwenten Juni", correct:"07.06.",
+    {text:"De siwente Juni",     correct:"07.06.",
       others:["06.07.","17.06.","07.09.","27.06."]},
-    {text:"Den aachten Juli", correct:"08.07.",
+    {text:"Den aachte Juli",     correct:"08.07.",
       others:["07.08.","18.07.","08.06.","28.07."]},
-    {text:"Den néngten August", correct:"09.08.",
+    {text:"Den néngte August",   correct:"09.08.",
       others:["19.08.","09.10.","29.08.","09.03."]},
-    {text:"Den zéngten September", correct:"10.09.",
+    {text:"Den zéngte September",correct:"10.09.",
       others:["09.10.","01.09.","20.09.","10.11."]},
-    {text:"Den eelefsten Oktober", correct:"11.10.",
+    {text:"Den eeleften Oktober",correct:"11.10.",
       others:["10.11.","21.10.","12.10.","11.01."]},
-    {text:"Den zwielefsten Oktober", correct:"12.10.",
+    {text:"Den zwieleften Oktober",correct:"12.10.",
       others:["21.12.","10.12.","02.10.","13.10."]},
-    {text:"Den dräizéngten November", correct:"13.11.",
+    {text:"Den dräizéngte November",correct:"13.11.",
       others:["31.11.","13.01.","23.11.","03.11."]},
-    {text:"De véierzéngten November", correct:"14.11.",
+    {text:"De véierzéngte November",correct:"14.11.",
       others:["24.11.","14.01.","04.11.","10.04."]},
-    {text:"De fofzéngten November", correct:"15.11.",
+    {text:"De fofzéngte November",correct:"15.11.",
       others:["05.11.","25.11.","15.01.","11.05."]},
-    {text:"De siechzéngten Dezember", correct:"16.12.",
+    {text:"De siechzéngte Dezember",correct:"16.12.",
       others:["06.12.","26.12.","10.12.","16.10."]},
-    {text:"De siwwenzéngten Dezember", correct:"17.12.",
+    {text:"De siwwenzéngte Dezember",correct:"17.12.",
       others:["07.12.","27.12.","17.11.","10.07."]},
-    {text:"Den uechtzéngten Dezember", correct:"18.12.",
+    {text:"Den uechtzéngte Dezember",correct:"18.12.",
       others:["08.12.","28.12.","18.10.","18.02."]},
-    {text:"Den nonzéngten Dezember", correct:"19.12.",
+    {text:"Den nonzéngte Dezember",correct:"19.12.",
       others:["09.12.","29.12.","10.09.","19.10."]},
-    {text:"Den eenanzwanzegsten Mee", correct:"21.05.",
+    {text:"Den eenanzwanzegste Mee",correct:"21.05.",
       others:["12.05.","20.05.","21.03.","21.06."]}
   ];
 
-  function shuffle(array){
-    return array
-      .map(v=>({v, sort:Math.random()}))
-      .sort((a,b)=>a.sort-b.sort)
-      .map(({v})=>v);
-  }
-
+  let g2Order = shuffle([...Array(g2Tasks.length).keys()]);
   let g2Index = 0;
 
   function g2RenderTask(){
     g2Feedback.textContent = '';
     g2Feedback.className = 'feedback';
     g2OptionsEl.innerHTML = '';
-    const task = g2Tasks[g2Index];
+
+    if(g2Index >= g2Order.length){
+      g2QuestionEl.textContent = "Super! Du bass fäerdeg mat dësem Spill.";
+      g2Feedback.textContent = "Mir ginn elo bei d'Spill 3.";
+      g2Feedback.className = "feedback ok";
+      setTimeout(()=>setGame(2), 1200); // jump to game 3
+      return;
+    }
+
+    const task = g2Tasks[g2Order[g2Index]];
     g2QuestionEl.textContent = task.text;
 
     const options = shuffle([task.correct, ...task.others]);
@@ -822,7 +832,11 @@
   }
 
   g2NextBtn.addEventListener('click', ()=>{
-    g2Index = (g2Index+1) % g2Tasks.length;
+    g2Index++;
+    if(g2Index >= g2Order.length){
+      g2Order = shuffle([...Array(g2Tasks.length).keys()]);
+      g2Index = 0;
+    }
     g2RenderTask();
   });
 
@@ -861,9 +875,8 @@
 
   function g3AnimateWheel(wheel, newDigit){
     const span = wheel.querySelector('span');
-    // reset animation
     span.style.animation = 'none';
-    span.offsetHeight; // force reflow
+    span.offsetHeight; // reflow
     span.textContent = newDigit;
     span.style.animation = 'wheelSpin .25s ease-out';
   }
@@ -903,26 +916,26 @@
   const g4ResetBtn = document.getElementById('g4ResetBtn');
 
   const g4Pairs = [
-    {id:1, text:"Den éischten Januar", numeric:"01.01."},
-    {id:2, text:"Den zweeten Januar", numeric:"02.01."},
-    {id:3, text:"Den drëtten Februar", numeric:"03.02."},
-    {id:4, text:"De véierte Mäerz", numeric:"04.03."},
-    {id:5, text:"De fënneften Abrëll", numeric:"05.04."},
-    {id:6, text:"De sechsten Mee", numeric:"06.05."},
-    {id:7, text:"De siwenten Juni", numeric:"07.06."},
-    {id:8, text:"Den aachten Juli", numeric:"08.07."},
-    {id:9, text:"Den néngten August", numeric:"09.08."},
-    {id:10, text:"Den zéngten September", numeric:"10.09."},
-    {id:11, text:"Den eelefsten Oktober", numeric:"11.10."},
-    {id:12, text:"Den zwielefsten Oktober", numeric:"12.10."},
-    {id:13, text:"Den dräizéngten November", numeric:"13.11."},
-    {id:14, text:"De véierzéngten November", numeric:"14.11."},
-    {id:15, text:"De fofzéngten November", numeric:"15.11."},
-    {id:16, text:"De siechzéngten Dezember", numeric:"16.12."},
-    {id:17, text:"De siwwenzéngten Dezember", numeric:"17.12."},
-    {id:18, text:"Den uechtzéngten Dezember", numeric:"18.12."},
-    {id:19, text:"Den nonzéngten Dezember", numeric:"19.12."},
-    {id:20, text:"Den eenanzwanzegsten Mee", numeric:"21.05."}
+    {id:1,  text:"Den drëtte Januar",         numeric:"03.01."},
+    {id:2,  text:"De fënnefte Januar",        numeric:"05.01."},
+    {id:3,  text:"De siwente Januar",         numeric:"07.01."},
+    {id:4,  text:"Den éischte Februar",       numeric:"01.02."},
+    {id:5,  text:"De véierte Februar",        numeric:"04.02."},
+    {id:6,  text:"De sechste Februar",        numeric:"06.02."},
+    {id:7,  text:"Den zweete Mäerz",         numeric:"02.03."},
+    {id:8,  text:"De fënnefte Mäerz",         numeric:"05.03."},
+    {id:9,  text:"Den aachte Mäerz",         numeric:"08.03."},
+    {id:10, text:"Den éischte Abrëll",        numeric:"01.04."},
+    {id:11, text:"Den drëtte Abrëll",         numeric:"03.04."},
+    {id:12, text:"De sechste Abrëll",         numeric:"06.04."},
+    {id:13, text:"Den zweete Juni",          numeric:"02.06."},
+    {id:14, text:"De véierte Juni",           numeric:"04.06."},
+    {id:15, text:"Den aachte Juni",          numeric:"08.06."},
+    {id:16, text:"Den éischte September",     numeric:"01.09."},
+    {id:17, text:"Den drëtte September",      numeric:"03.09."},
+    {id:18, text:"De fënnefte September",     numeric:"05.09."},
+    {id:19, text:"Den éischte November",      numeric:"01.11."},
+    {id:20, text:"Den drëtte November",       numeric:"03.11."}
   ];
 
   let g4SelectedSentenceId = null;
@@ -933,12 +946,14 @@
     g4CardsEl.innerHTML='';
     g4SelectedSentenceId = null;
 
-    g4Pairs.forEach(pair=>{
+    const sentenceOrder = shuffle(g4Pairs.slice());
+    sentenceOrder.forEach(pair=>{
       const item = document.createElement('div');
       item.className = 'g4-item';
       item.dataset.id = pair.id;
-      item.innerHTML = `<div>${pair.text}</div><div class="g4-slot" data-slot-for="${pair.id}">...</div>`;
+      item.textContent = pair.text;
       item.addEventListener('click', ()=>{
+        if(item.classList.contains('matched')) return;
         Array.from(g4ListEl.children).forEach(el=>el.classList.remove('selected'));
         item.classList.add('selected');
         g4SelectedSentenceId = pair.id;
@@ -946,8 +961,8 @@
       g4ListEl.appendChild(item);
     });
 
-    const shuffled = shuffle(g4Pairs.slice());
-    shuffled.forEach(pair=>{
+    const shuffledCards = shuffle(g4Pairs.slice());
+    shuffledCards.forEach(pair=>{
       const card = document.createElement('div');
       card.className = 'g4-card';
       card.dataset.id = pair.id;
@@ -961,19 +976,19 @@
         }
         const correctId = card.dataset.id;
         if(Number(correctId) === Number(g4SelectedSentenceId)){
-          const slot = g4ListEl.querySelector(`[data-slot-for="${g4SelectedSentenceId}"]`);
-          slot.textContent = card.textContent;
+          const sentenceEl = g4ListEl.querySelector(`.g4-item[data-id="${g4SelectedSentenceId}"]`);
+          sentenceEl.classList.add('matched');
           card.classList.add('used');
           g4Feedback.textContent = "Super! Dat passt.";
           g4Feedback.className = 'feedback ok';
           Array.from(g4ListEl.children).forEach(el=>el.classList.remove('selected'));
           g4SelectedSentenceId = null;
 
-          const allSlotsFilled = g4Pairs.every(p=>{
-            const s = g4ListEl.querySelector(`[data-slot-for="${p.id}"]`);
-            return s && s.textContent !== '...';
+          const allMatched = g4Pairs.every(p=>{
+            const s = g4ListEl.querySelector(`.g4-item[data-id="${p.id}"]`);
+            return s && s.classList.contains('matched');
           });
-          if(allSlotsFilled){
+          if(allMatched){
             g4Feedback.textContent = "Bravo! All Datumer si richteg gepaart.";
           }
         }else{
@@ -999,27 +1014,24 @@
   const g5Progress = document.getElementById('g5Progress');
 
   const g5Tasks = [
-    {prompt:"01.01.", solution:"Den éischten Januar"},
-    {prompt:"02.01.", solution:"Den zweeten Januar"},
-    {prompt:"03.02.", solution:"Den drëtten Februar"},
-    {prompt:"04.03.", solution:"De véierte Mäerz"},
-    {prompt:"05.04.", solution:"De fënneften Abrëll"},
-    {prompt:"06.05.", solution:"De sechsten Mee"},
-    {prompt:"07.06.", solution:"De siwenten Juni"},
-    {prompt:"08.07.", solution:"Den aachten Juli"},
-    {prompt:"09.08.", solution:"Den néngten August"},
-    {prompt:"10.09.", solution:"Den zéngten September"},
-    {prompt:"11.10.", solution:"Den eelefsten Oktober"},
-    {prompt:"12.10.", solution:"Den zwielefsten Oktober"},
-    {prompt:"13.11.", solution:"Den dräizéngten November"},
-    {prompt:"14.11.", solution:"De véierzéngten November"},
-    {prompt:"15.11.", solution:"De fofzéngten November"},
-    {prompt:"16.12.", solution:"De siechzéngten Dezember"},
-    {prompt:"17.12.", solution:"De siwwenzéngten Dezember"},
-    {prompt:"18.12.", solution:"Den uechtzéngten Dezember"},
-    {prompt:"19.12.", solution:"Den nonzéngten Dezember"},
-    {prompt:"21.05.", solution:"Den eenanzwanzegsten Mee"}
+    {prompt:"02.07.", solution:"Den zweete Juli"},
+    {prompt:"04.07.", solution:"De véierte Juli"},
+    {prompt:"06.07.", solution:"De sechste Juli"},
+    {prompt:"09.07.", solution:"Den néngte Juli"},
+    {prompt:"11.07.", solution:"Den eeleften Juli"},
+    {prompt:"02.08.", solution:"Den zweete August"},
+    {prompt:"04.08.", solution:"De véierte August"},
+    {prompt:"06.08.", solution:"De sechste August"},
+    {prompt:"10.08.", solution:"Den zéngte August"},
+    {prompt:"12.08.", solution:"Den zwieleften August"},
+    {prompt:"02.10.", solution:"Den zweete Oktober"},
+    {prompt:"04.10.", solution:"De véierte Oktober"},
+    {prompt:"06.10.", solution:"De sechste Oktober"},
+    {prompt:"18.10.", solution:"Den uechtzéngte Oktober"},
+    {prompt:"09.12.", solution:"Den néngte Dezember"}
   ];
+
+  let g5Order = shuffle([...Array(g5Tasks.length).keys()]);
   let g5Index = 0;
 
   function normalize(str){
@@ -1030,7 +1042,7 @@
   }
 
   function g5RenderTask(){
-    const task = g5Tasks[g5Index];
+    const task = g5Tasks[g5Order[g5Index]];
     g5Prompt.textContent = `Schreiw: ${task.prompt}`;
     g5Input.value = '';
     g5Input.focus();
@@ -1041,7 +1053,7 @@
   }
 
   g5CheckBtn.addEventListener('click', ()=>{
-    const task = g5Tasks[g5Index];
+    const task = g5Tasks[g5Order[g5Index]];
     const user = normalize(g5Input.value);
     const correct = normalize(task.solution);
     if(!user){
@@ -1061,11 +1073,15 @@
   });
 
   g5NextBtn.addEventListener('click', ()=>{
-    g5Index = (g5Index+1) % g5Tasks.length;
+    g5Index++;
+    if(g5Index >= g5Tasks.length){
+      g5Order = shuffle([...Array(g5Tasks.length).keys()]);
+      g5Index = 0;
+    }
     g5RenderTask();
   });
 
-  /* QWERTZ keyboard with SHIFT */
+  /* QWERTZ keyboard with SHIFT that also visually uppercases */
   const keyboardRows = [
     ['q','w','e','r','t','z','u','i','o','p','ü','é'],
     ['a','s','d','f','g','h','j','k','l','ë','ä'],
@@ -1075,11 +1091,29 @@
 
   let shiftActive = false;
 
+  function updateKeyboardLabels(){
+    const keys = g5Keyboard.querySelectorAll('.g5-key');
+    keys.forEach(btn=>{
+      const key = btn.dataset.key;
+      if(!key) return;
+      if(key==='SPACE'){
+        btn.textContent = '␣';
+      }else if(key==='BACK'){
+        btn.textContent = '⌫';
+      }else if(key==='SHIFT'){
+        btn.textContent = 'SHIFT';
+        btn.classList.toggle('shift-active', shiftActive);
+      }else{
+        btn.textContent = shiftActive ? key.toUpperCase() : key.toLowerCase();
+      }
+    });
+  }
+
   function addKey(text, wide=false){
     const btn = document.createElement('button');
     btn.className = 'g5-key' + (wide?' wide':'');
     btn.dataset.key = text;
-    btn.textContent = (text==='SPACE') ? '␣' : (text==='BACK' ? '⌫' : text);
+    btn.textContent = text;
     btn.addEventListener('click', ()=>{
       if(text==='SPACE'){
         g5Input.value += ' ';
@@ -1087,16 +1121,15 @@
         g5Input.value = g5Input.value.slice(0,-1);
       }else if(text==='SHIFT'){
         shiftActive = !shiftActive;
-        btn.classList.toggle('shift-active', shiftActive);
+        updateKeyboardLabels();
         return;
       }else{
         const ch = shiftActive ? text.toUpperCase() : text;
         g5Input.value += ch;
+        // one-shot shift (like your P2 games)
         if(shiftActive){
-          // reset shift after one key
           shiftActive = false;
-          const shiftBtn = g5Keyboard.querySelector('[data-key="SHIFT"]');
-          if(shiftBtn) shiftBtn.classList.remove('shift-active');
+          updateKeyboardLabels();
         }
       }
       g5Input.focus();
@@ -1113,6 +1146,7 @@
     });
     g5Keyboard.appendChild(rowDiv);
   });
+  updateKeyboardLabels();
 
   g5RenderTask();
 
