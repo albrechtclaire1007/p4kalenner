@@ -22,7 +22,6 @@
       --white:#fff;
       --ok:#b7f0c8;
       --bad:#ffcccc;
-      --border:3px;
       --radius:18px;
     }
 
@@ -32,30 +31,15 @@
       background:var(--purple-light);
       color:var(--ink);
       min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:8px;
+      padding:16px;
     }
     button{
       font-family:'Schoulschrëft', system-ui, sans-serif;
     }
 
-    .app{
-      background:var(--white);
-      border-radius:24px;
-      border:var(--border) solid var(--purple-dark);
-      max-width:1100px;
-      width:100%;
-      padding:12px 12px 16px;
-      box-shadow:0 10px 25px rgba(0,0,0,0.12);
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
-
-    /* Top bar with arrows */
     .top-bar{
+      max-width:1100px;
+      margin:0 auto 8px;
       display:flex;
       align-items:center;
       justify-content:space-between;
@@ -65,7 +49,7 @@
       color:var(--white);
     }
     .top-bar-title{
-      font-size:1.1rem;
+      font-size:1.05rem;
       text-align:center;
       flex:1;
     }
@@ -88,43 +72,17 @@
     }
 
     .subtitle{
+      max-width:1100px;
+      margin:0 auto 12px;
       text-align:center;
       font-size:0.9rem;
       opacity:0.8;
-      margin-top:2px;
-    }
-
-    /* Nav pills underneath */
-    .nav{
-      display:flex;
-      flex-wrap:wrap;
-      gap:4px;
-      justify-content:center;
-      margin-top:4px;
-    }
-    .nav button{
-      flex:1 1 120px;
-      padding:4px 8px;
-      border-radius:999px;
-      border:2px solid var(--purple-mid);
-      background:var(--purple-light);
-      color:var(--ink);
-      font-size:0.9rem;
-      cursor:pointer;
-      transition:.15s;
-      white-space:nowrap;
-    }
-    .nav button.active{
-      background:var(--purple-mid);
-      color:var(--white);
-      border-color:var(--purple-dark);
-      transform:translateY(-1px);
     }
 
     .games{
-      position:relative;
+      max-width:1100px;
+      margin:0 auto;
       min-height:320px;
-      margin-top:6px;
     }
     .game{
       display:none;
@@ -137,21 +95,16 @@
       to{opacity:1;transform:translateY(0);}
     }
 
-    .game-inner{
-      border-radius:var(--radius);
-      border:2px solid var(--purple-mid);
-      padding:10px;
-      background:#faf8ff;
-    }
-
     .game h2{
-      font-size:1.15rem;
+      font-size:1.1rem;
       margin-bottom:4px;
       color:var(--purple-dark);
+      text-align:center;
     }
     .instructions{
       font-size:0.9rem;
-      margin-bottom:8px;
+      margin-bottom:10px;
+      text-align:center;
     }
 
     button.primary{
@@ -189,23 +142,27 @@
       margin-top:6px;
       min-height:1.4em;
       font-size:0.9rem;
+      text-align:left;
     }
     .feedback.ok{color:#117a3a;}
     .feedback.bad{color:#b02323;}
 
-    /* GAME 1 */
+    /* GAME 1 – Lauschter a klick */
     .g1-layout{
       display:flex;
       flex-direction:column;
-      gap:8px;
+      gap:10px;
+      align-items:center;
     }
     @media(min-width:780px){
       .g1-layout{
         flex-direction:row;
+        align-items:flex-start;
+        justify-content:center;
       }
     }
     .g1-left{
-      flex:0 0 220px;
+      flex:0 0 240px;
       display:flex;
       flex-direction:column;
       gap:6px;
@@ -235,47 +192,56 @@
     .audio-label{
       font-size:0.9rem;
     }
-    .g1-calendar-wrapper{
-      position:relative;
+
+    .g1-calendar{
       flex:1 1 auto;
-      max-width:620px;
-      margin:0 auto;
+      max-width:600px;
+      background:var(--white);
+      border-radius:24px;
+      padding:10px 14px 14px;
+      box-shadow:0 6px 16px rgba(0,0,0,0.12);
     }
-    .g1-calendar-wrapper img{
-      width:100%;
-      display:block;
-      border-radius:var(--radius);
-      border:2px solid var(--purple-mid);
+    .g1-cal-title{
+      text-align:center;
+      font-size:1rem;
+      margin-bottom:6px;
+      color:var(--purple-dark);
     }
-    .g1-hotspots{
-      position:absolute;
-      inset:24% 5% 10% 5%; /* moved grid a bit further down */
+    .g1-weekdays{
       display:grid;
       grid-template-columns:repeat(7,1fr);
-      grid-template-rows:repeat(6,1fr);
+      font-size:0.8rem;
+      margin-bottom:4px;
+      text-align:center;
+      opacity:0.8;
     }
-    .g1-cell{
-      position:relative;
+    .g1-weekdays div{
+      padding:2px 0;
+    }
+    .g1-cal-grid{
+      display:grid;
+      grid-template-columns:repeat(7,1fr);
+      gap:3px;
+    }
+    .g1-day{
+      height:48px;
+      border-radius:12px;
+      border:2px solid #e0d6ff;
+      background:#fdfbff;
+      font-size:0.9rem;
       cursor:pointer;
-    }
-    .g1-cell::after{
-      content:attr(data-day);
-      position:absolute;
-      inset:4px;
       display:flex;
       align-items:flex-start;
       justify-content:flex-end;
-      font-size:0.6rem;
-      opacity:0; /* set to .5 for debugging */
-      pointer-events:none;
+      padding:3px 5px;
     }
-    .g1-cell.correct{
-      background:rgba(183,240,200,0.35);
-      border-radius:8px;
+    .g1-day.correct{
+      background:var(--ok);
+      border-color:#169451;
     }
-    .g1-cell.wrong{
-      background:rgba(255,204,204,0.35);
-      border-radius:8px;
+    .g1-day.wrong{
+      background:var(--bad);
+      border-color:#a52828;
       animation:shake .16s linear;
     }
     @keyframes shake{
@@ -286,10 +252,15 @@
       100%{transform:translateX(0);}
     }
 
-    /* GAME 2 */
+    /* GAME 2 – Lies a klick */
+    .g2-wrapper{
+      max-width:600px;
+      margin:0 auto;
+    }
     .g2-question{
-      font-size:1.0rem;
+      font-size:1rem;
       margin-bottom:8px;
+      text-align:center;
     }
     .g2-options{
       display:grid;
@@ -330,6 +301,7 @@
       background:var(--white);
       border:2px solid var(--purple-mid);
       font-size:1.4rem;
+      box-shadow:0 5px 12px rgba(0,0,0,0.12);
     }
     .wheel{
       width:26px;
@@ -364,20 +336,21 @@
     /* GAME 4 – matching */
     .g4-layout{
       display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:8px;
-      margin-top:4px;
+      grid-template-columns:1.1fr 0.9fr;
+      gap:12px;
+      margin-top:6px;
+      align-items:flex-start;
     }
-    @media(max-width:800px){
+    @media(max-width:900px){
       .g4-layout{
         grid-template-columns:1fr;
       }
     }
     .g4-box{
-      border-radius:var(--radius);
-      border:2px solid var(--purple-dark);
-      background:rgba(183,162,229,0.1);
-      padding:6px;
+      border-radius:24px;
+      background:rgba(183,162,229,0.15);
+      padding:8px;
+      box-shadow:0 5px 12px rgba(0,0,0,0.08);
     }
     .g4-box h3{
       font-size:0.95rem;
@@ -386,18 +359,17 @@
       text-align:center;
     }
     .g4-list{
-      display:flex;
-      flex-direction:column;
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
       gap:4px;
     }
     .g4-item{
       padding:5px 7px;
-      border-radius:var(--radius);
+      border-radius:14px;
       border:2px solid var(--purple-mid);
       background:#fff;
       font-size:0.9rem;
       cursor:pointer;
-      position:relative;
     }
     .g4-item.selected{
       border-color:var(--purple-dark);
@@ -428,9 +400,14 @@
     }
 
     /* GAME 5 – write date */
+    .g5-wrapper{
+      max-width:800px;
+      margin:0 auto;
+    }
     .g5-prompt{
       font-size:1.0rem;
       margin-bottom:6px;
+      text-align:left;
     }
     .g5-input-row{
       display:flex;
@@ -441,16 +418,18 @@
     .g5-input-row input{
       width:100%;
       padding:6px 8px;
-      border-radius:var(--radius);
+      border-radius:999px;
       border:2px solid var(--purple-mid);
       font-size:0.95rem;
       font-family:'Schoulschrëft', system-ui, sans-serif;
+      background:#fff;
     }
     .g5-keyboard{
       display:flex;
       flex-direction:column;
       gap:3px;
       margin:4px 0 6px;
+      align-items:center;
     }
     .g5-row{
       display:flex;
@@ -466,6 +445,7 @@
       background:#fff;
       font-size:0.8rem;
       cursor:pointer;
+      text-align:center;
     }
     .g5-key.wide{
       min-width:50px;
@@ -487,135 +467,126 @@
   </style>
 </head>
 <body>
-<div class="app">
-  <!-- Top bar -->
   <div class="top-bar">
     <button id="topPrev" class="top-arrow">‹</button>
-    <div id="topTitle" class="top-bar-title">1. Lauschter & klick</div>
+    <div id="topTitle" class="top-bar-title">1. Lauschter a klick</div>
     <button id="topNext" class="top-arrow">›</button>
   </div>
   <p class="subtitle">P4 – De Kalenner: Datumer liesen a schreiwen</p>
 
-  <!-- nav pills -->
-  <div class="nav">
-    <button class="nav-btn active" data-index="0" data-target="game1">1. Lauschter & klick</button>
-    <button class="nav-btn" data-index="1" data-target="game2">2. Lies & klick</button>
-    <button class="nav-btn" data-index="2" data-target="game3">3. Lies den Datum</button>
-    <button class="nav-btn" data-index="3" data-target="game4">4. Fann de passenden Datum</button>
-    <button class="nav-btn" data-index="4" data-target="game5">5. Schreif den Datum</button>
-  </div>
-
   <div class="games">
     <!-- GAME 1 -->
     <section id="game1" class="game active">
-      <div class="game-inner">
-        <h2>1. Lauschter & klick op den Datum</h2>
-        <div class="g1-layout">
-          <div class="g1-left">
-            <button id="g1PlayBtn" class="audio-btn" title="Lauschteren">
-              <span></span>
-            </button>
-            <p class="audio-label">Klick op de Knäppchen fir ze lauschteren an duerno op den Datum.</p>
-            <button id="g1NextBtn" class="secondary">Nächsten Datum</button>
-            <div id="g1Feedback" class="feedback"></div>
+      <h2>1. Lauschter a klick</h2>
+      <p class="instructions">Lauschter den Datum a klick duerno op déi richteg Zuel um Kalenner.</p>
+      <div class="g1-layout">
+        <div class="g1-left">
+          <button id="g1PlayBtn" class="audio-btn" title="Lauschteren">
+            <span></span>
+          </button>
+          <p class="audio-label">Klick op de Knäppchen fir ze lauschteren an duerno op den Datum.</p>
+          <button id="g1NextBtn" class="secondary">Nächsten Datum</button>
+          <div id="g1Feedback" class="feedback"></div>
+        </div>
+        <div class="g1-calendar">
+          <div class="g1-cal-title">Kalenner</div>
+          <div class="g1-weekdays">
+            <div>Mo</div><div>Di</div><div>Më</div><div>Do</div><div>Fr</div><div>Sa</div><div>So</div>
           </div>
-          <div class="g1-calendar-wrapper">
-            <img id="g1CalendarImg"
-                 src="https://i.postimg.cc/fyq9S0fD/Beige-and-Brown-Illustrated-Cute-Autumn-November-2023-Monthly-Calendar.png"
-                 alt="November 2023 Kalenner">
-            <div class="g1-hotspots" id="g1Hotspots"></div>
-          </div>
+          <div class="g1-cal-grid" id="g1CalGrid"></div>
         </div>
       </div>
     </section>
 
     <!-- GAME 2 -->
     <section id="game2" class="game">
-      <div class="game-inner">
-        <h2>2. Lies den Datum & klick op déi richteg Zueleschreifweis</h2>
+      <h2>2. Lies a klick</h2>
+      <p class="instructions">Lies den Datum a klick op déi richteg Zueleschreifweis.</p>
+      <div class="g2-wrapper">
         <div id="g2Question" class="g2-question"></div>
         <div id="g2Options" class="g2-options"></div>
-        <button id="g2NextBtn" class="secondary" style="margin-top:6px;">Nächst Fro</button>
+        <div style="margin-top:6px;display:flex;justify-content:center;gap:8px;">
+          <button id="g2NextBtn" class="secondary">Nächst Fro</button>
+        </div>
         <div id="g2Feedback" class="feedback"></div>
       </div>
     </section>
 
     <!-- GAME 3 -->
     <section id="game3" class="game">
-      <div class="game-inner">
-        <h2>3. Lies den Datum</h2>
-        <div class="g3-display">
-          <div class="wheels" id="g3Wheels">
-            <div class="wheel" data-pos="0"><span>0</span></div>
-            <div class="wheel" data-pos="1"><span>1</span></div>
-            <div class="dot">.</div>
-            <div class="wheel" data-pos="2"><span>0</span></div>
-            <div class="wheel" data-pos="3"><span>1</span></div>
-            <div class="dot">.</div>
-            <div class="wheel" data-pos="4"><span>2</span></div>
-            <div class="wheel" data-pos="5"><span>0</span></div>
-            <div class="wheel" data-pos="6"><span>2</span></div>
-            <div class="wheel" data-pos="7"><span>4</span></div>
-          </div>
-          <div class="g3-buttons">
-            <button id="g3PrevBtn" class="secondary">◀️ Zréck</button>
-            <button id="g3NextBtn" class="primary">▶️ Nächsten Datum</button>
-          </div>
+      <h2>3. Lies den Datum</h2>
+      <p class="instructions">Kuck op d'Zuelen a lies de ganzen Datum vir (Dag, Mount an d'Joer).</p>
+      <div class="g3-display">
+        <div class="wheels" id="g3Wheels">
+          <div class="wheel" data-pos="0"><span>0</span></div>
+          <div class="wheel" data-pos="1"><span>1</span></div>
+          <div class="dot">.</div>
+          <div class="wheel" data-pos="2"><span>0</span></div>
+          <div class="wheel" data-pos="3"><span>1</span></div>
+          <div class="dot">.</div>
+          <div class="wheel" data-pos="4"><span>2</span></div>
+          <div class="wheel" data-pos="5"><span>0</span></div>
+          <div class="wheel" data-pos="6"><span>2</span></div>
+          <div class="wheel" data-pos="7"><span>4</span></div>
+        </div>
+        <div class="g3-buttons">
+          <button id="g3PrevBtn" class="secondary">◀️ Zréck</button>
+          <button id="g3NextBtn" class="primary">▶️ Nächsten Datum</button>
         </div>
       </div>
     </section>
 
     <!-- GAME 4 -->
     <section id="game4" class="game">
-      <div class="game-inner">
-        <h2>4. Fann de passenden Datum</h2>
-        <p class="instructions">Wielt e Saz a klick duerno op déi passend Zueleschreifweis.</p>
-        <div class="g4-layout">
-          <div class="g4-box">
-            <h3>Datumer am Saz</h3>
-            <div id="g4List" class="g4-list"></div>
-          </div>
-          <div class="g4-box">
-            <h3>Zueleschreifweis</h3>
-            <div id="g4Cards" class="g4-cards"></div>
-          </div>
+      <h2>4. Fann de passenden Datum</h2>
+      <p class="instructions">Wielt e Saz a klick duerno op déi passend Zueleschreifweis.</p>
+      <div class="g4-layout">
+        <div class="g4-box">
+          <h3>Datumer am Saz</h3>
+          <div id="g4List" class="g4-list"></div>
         </div>
-        <button id="g4ResetBtn" class="secondary" style="margin-top:6px;">Nach eng Kéier</button>
-        <div id="g4Feedback" class="feedback"></div>
+        <div class="g4-box">
+          <h3>Zueleschreifweis</h3>
+          <div id="g4Cards" class="g4-cards"></div>
+        </div>
       </div>
+      <div style="margin-top:6px;display:flex;justify-content:center;">
+        <button id="g4ResetBtn" class="secondary">Nach eng Kéier</button>
+      </div>
+      <div id="g4Feedback" class="feedback"></div>
     </section>
 
     <!-- GAME 5 -->
     <section id="game5" class="game">
-      <div class="game-inner">
-        <h2>5. Schreif den Datum</h2>
+      <h2>5. Schreif den Datum</h2>
+      <div class="g5-wrapper">
         <div id="g5Prompt" class="g5-prompt"></div>
         <div class="g5-input-row">
           <input id="g5Input" type="text" autocomplete="off"
                  placeholder="Den éischte Januar ..." />
         </div>
         <div class="g5-keyboard" id="g5Keyboard"></div>
-        <button id="g5CheckBtn" class="primary">Kontrolléier</button>
-        <button id="g5NextBtn" class="secondary">Nächst</button>
+        <div style="display:flex;gap:8px;margin-bottom:4px;">
+          <button id="g5CheckBtn" class="primary">Kontrolléier</button>
+          <button id="g5NextBtn" class="secondary">Nächst</button>
+        </div>
         <div id="g5Feedback" class="feedback"></div>
         <div id="g5Solution" class="solution"></div>
         <div id="g5Progress" class="progress"></div>
       </div>
     </section>
   </div>
-</div>
 
 <script>
   /* ------------ NAV & TOP BAR ------------ */
-  const navButtons = document.querySelectorAll('.nav-btn');
   const games = document.querySelectorAll('.game');
   const topTitle = document.getElementById('topTitle');
   const topPrev = document.getElementById('topPrev');
   const topNext = document.getElementById('topNext');
 
   const gameTitles = [
-    '1. Lauschter & klick',
-    '2. Lies & klick',
+    '1. Lauschter a klick',
+    '2. Lies a klick',
     '3. Lies den Datum',
     '4. Fann de passenden Datum',
     '5. Schreif den Datum'
@@ -627,21 +598,10 @@
     currentGameIndex = index;
     games.forEach(g=>g.classList.remove('active'));
     games[index].classList.add('active');
-
-    navButtons.forEach(b=>b.classList.remove('active'));
-    navButtons[index].classList.add('active');
-
     topTitle.textContent = gameTitles[index];
     topPrev.disabled = (index===0);
     topNext.disabled = (index===games.length-1);
   }
-
-  navButtons.forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      const idx = Number(btn.dataset.index);
-      setGame(idx);
-    });
-  });
 
   topPrev.addEventListener('click', ()=>{
     if(currentGameIndex>0) setGame(currentGameIndex-1);
@@ -658,7 +618,7 @@
       .map(({v})=>v);
   }
 
-  /* ------------ GAME 1: Lauschter & Klick ------------ */
+  /* ------------ GAME 1: Lauschter a klick ------------ */
   const AUDIO_BASE_URL =
     "https://github.com/albrechtclaire1007/p4kalenner/raw/refs/heads/main/";
 
@@ -666,34 +626,17 @@
   const g1PlayBtn = document.getElementById('g1PlayBtn');
   const g1NextBtn = document.getElementById('g1NextBtn');
   const g1Feedback = document.getElementById('g1Feedback');
-  const g1Hotspots = document.getElementById('g1Hotspots');
+  const g1CalGrid = document.getElementById('g1CalGrid');
 
-  const rows = 6;
-  const cols = 7;
-
-  // build grid
-  for(let r=0;r<rows;r++){
-    for(let c=0;c<cols;c++){
-      const cell = document.createElement('div');
-      cell.className = 'g1-cell';
-      cell.dataset.row = r;
-      cell.dataset.col = c;
-      g1Hotspots.appendChild(cell);
-    }
-  }
-  const g1Cells = Array.from(document.querySelectorAll('.g1-cell'));
-
-  // November 2023 layout: first row = 29,30,31,1,2,3,4
-  const totalDays = 30;
-  const startOffset = 3; // index of "1" in first row
-  for(let day=1; day<=totalDays; day++){
-    const index = (day-1)+startOffset;
-    const r = Math.floor(index/cols);
-    const c = index%cols;
-    const cell = g1Cells.find(el => +el.dataset.row===r && +el.dataset.col===c);
-    if(cell){
-      cell.dataset.day = day;
-    }
+  // build simple calendar 1–31
+  const g1Days = [];
+  for(let d=1; d<=31; d++){
+    const btn = document.createElement('button');
+    btn.className = 'g1-day';
+    btn.textContent = d;
+    btn.dataset.day = d;
+    g1CalGrid.appendChild(btn);
+    g1Days.push(btn);
   }
 
   let g1CurrentDay = null;
@@ -703,8 +646,8 @@
     g1Locked = false;
     g1Feedback.textContent = 'Lauschter an da klick op den Datum.';
     g1Feedback.className = 'feedback';
-    g1Cells.forEach(c=>{c.classList.remove('correct','wrong');});
-    g1CurrentDay = Math.floor(Math.random()*totalDays)+1;
+    g1Days.forEach(c=>{c.classList.remove('correct','wrong');});
+    g1CurrentDay = Math.floor(Math.random()*31)+1;
     const filename = `P4__${g1CurrentDay}..mp3`;
     g1Audio.src = AUDIO_BASE_URL + filename;
   }
@@ -717,9 +660,9 @@
 
   g1NextBtn.addEventListener('click', g1SetTask);
 
-  g1Cells.forEach(cell=>{
+  g1Days.forEach(cell=>{
     cell.addEventListener('click', ()=>{
-      if(g1Locked || !cell.dataset.day) return;
+      if(g1Locked) return;
       const chosen = Number(cell.dataset.day);
       if(chosen === g1CurrentDay){
         cell.classList.add('correct');
@@ -737,12 +680,14 @@
 
   g1SetTask();
 
-  /* ------------ GAME 2: Read & MCQ ------------ */
+  /* ------------ GAME 2: Lies a klick ------------ */
   const g2QuestionEl = document.getElementById('g2Question');
   const g2OptionsEl = document.getElementById('g2Options');
   const g2Feedback = document.getElementById('g2Feedback');
   const g2NextBtn = document.getElementById('g2NextBtn');
 
+  // ordinals follow N-rule: Den if ordinal starts with U N I T E D Z O A H (or é),
+  // De otherwise. Forms with -e (éischte, zweete, drëtte, ...) as you requested.
   const g2Tasks = [
     {text:"Den éischte Januar",   correct:"01.01.",
       others:["10.01.","01.10.","11.01.","31.01."]},
@@ -752,7 +697,7 @@
       others:["02.03.","30.02.","13.02.","03.12."]},
     {text:"De véierte Mäerz",    correct:"04.03.",
       others:["03.04.","14.03.","04.05.","24.03."]},
-    {text:"De fënnefte Abrëll",  correct:"05.04.",
+    {text:"De fënneften Abrëll",  correct:"05.04.",
       others:["04.05.","15.04.","05.06.","25.04."]},
     {text:"De sechste Mee",      correct:"06.05.",
       others:["05.06.","16.05.","06.03.","26.05."]},
@@ -760,7 +705,7 @@
       others:["06.07.","17.06.","07.09.","27.06."]},
     {text:"Den aachte Juli",     correct:"08.07.",
       others:["07.08.","18.07.","08.06.","28.07."]},
-    {text:"Den néngte August",   correct:"09.08.",
+    {text:"Den néngten August",   correct:"09.08.",
       others:["19.08.","09.10.","29.08.","09.03."]},
     {text:"Den zéngte September",correct:"10.09.",
       others:["09.10.","01.09.","20.09.","10.11."]},
@@ -774,13 +719,13 @@
       others:["24.11.","14.01.","04.11.","10.04."]},
     {text:"De fofzéngte November",correct:"15.11.",
       others:["05.11.","25.11.","15.01.","11.05."]},
-    {text:"De siechzéngte Dezember",correct:"16.12.",
+    {text:"De siechzéngten Dezember",correct:"16.12.",
       others:["06.12.","26.12.","10.12.","16.10."]},
-    {text:"De siwwenzéngte Dezember",correct:"17.12.",
+    {text:"De siwwenzéngten Dezember",correct:"17.12.",
       others:["07.12.","27.12.","17.11.","10.07."]},
-    {text:"Den uechtzéngte Dezember",correct:"18.12.",
+    {text:"Den uechtzéngten Dezember",correct:"18.12.",
       others:["08.12.","28.12.","18.10.","18.02."]},
-    {text:"Den nonzéngte Dezember",correct:"19.12.",
+    {text:"Den nonzéngten Dezember",correct:"19.12.",
       others:["09.12.","29.12.","10.09.","19.10."]},
     {text:"Den eenanzwanzegste Mee",correct:"21.05.",
       others:["12.05.","20.05.","21.03.","21.06."]}
@@ -798,7 +743,7 @@
       g2QuestionEl.textContent = "Super! Du bass fäerdeg mat dësem Spill.";
       g2Feedback.textContent = "Mir ginn elo bei d'Spill 3.";
       g2Feedback.className = "feedback ok";
-      setTimeout(()=>setGame(2), 1200); // jump to game 3
+      setTimeout(()=>setGame(2), 1200);
       return;
     }
 
@@ -876,7 +821,7 @@
   function g3AnimateWheel(wheel, newDigit){
     const span = wheel.querySelector('span');
     span.style.animation = 'none';
-    span.offsetHeight; // reflow
+    span.offsetHeight;
     span.textContent = newDigit;
     span.style.animation = 'wheelSpin .25s ease-out';
   }
@@ -915,6 +860,7 @@
   const g4Feedback = document.getElementById('g4Feedback');
   const g4ResetBtn = document.getElementById('g4ResetBtn');
 
+  // different examples than game 2 & 5
   const g4Pairs = [
     {id:1,  text:"Den drëtte Januar",         numeric:"03.01."},
     {id:2,  text:"De fënnefte Januar",        numeric:"05.01."},
@@ -922,20 +868,20 @@
     {id:4,  text:"Den éischte Februar",       numeric:"01.02."},
     {id:5,  text:"De véierte Februar",        numeric:"04.02."},
     {id:6,  text:"De sechste Februar",        numeric:"06.02."},
-    {id:7,  text:"Den zweete Mäerz",         numeric:"02.03."},
+    {id:7,  text:"Den zweete Mäerz",          numeric:"02.03."},
     {id:8,  text:"De fënnefte Mäerz",         numeric:"05.03."},
-    {id:9,  text:"Den aachte Mäerz",         numeric:"08.03."},
-    {id:10, text:"Den éischte Abrëll",        numeric:"01.04."},
-    {id:11, text:"Den drëtte Abrëll",         numeric:"03.04."},
-    {id:12, text:"De sechste Abrëll",         numeric:"06.04."},
-    {id:13, text:"Den zweete Juni",          numeric:"02.06."},
+    {id:9,  text:"Den aachte Mäerz",          numeric:"08.03."},
+    {id:10, text:"Den éischten Abrëll",        numeric:"01.04."},
+    {id:11, text:"Den drëtten Abrëll",         numeric:"03.04."},
+    {id:12, text:"De sechsten Abrëll",         numeric:"06.04."},
+    {id:13, text:"Den zweete Juni",           numeric:"02.06."},
     {id:14, text:"De véierte Juni",           numeric:"04.06."},
-    {id:15, text:"Den aachte Juni",          numeric:"08.06."},
-    {id:16, text:"Den éischte September",     numeric:"01.09."},
-    {id:17, text:"Den drëtte September",      numeric:"03.09."},
-    {id:18, text:"De fënnefte September",     numeric:"05.09."},
-    {id:19, text:"Den éischte November",      numeric:"01.11."},
-    {id:20, text:"Den drëtte November",       numeric:"03.11."}
+    {id:15, text:"Den aachte Juni",           numeric:"08.06."},
+    {id:16, text:"Den éischte November",      numeric:"01.11."},
+    {id:17, text:"Den drëtte November",       numeric:"03.11."},
+    {id:18, text:"De fënnefte November",      numeric:"05.11."},
+    {id:19, text:"Den zweete Dezember",       numeric:"02.12."},
+    {id:20, text:"De véierte Dezember",       numeric:"04.12."}
   ];
 
   let g4SelectedSentenceId = null;
@@ -1019,16 +965,16 @@
     {prompt:"06.07.", solution:"De sechste Juli"},
     {prompt:"09.07.", solution:"Den néngte Juli"},
     {prompt:"11.07.", solution:"Den eeleften Juli"},
-    {prompt:"02.08.", solution:"Den zweete August"},
-    {prompt:"04.08.", solution:"De véierte August"},
-    {prompt:"06.08.", solution:"De sechste August"},
-    {prompt:"10.08.", solution:"Den zéngte August"},
-    {prompt:"12.08.", solution:"Den zwieleften August"},
-    {prompt:"02.10.", solution:"Den zweete Oktober"},
-    {prompt:"04.10.", solution:"De véierte Oktober"},
-    {prompt:"06.10.", solution:"De sechste Oktober"},
-    {prompt:"18.10.", solution:"Den uechtzéngte Oktober"},
-    {prompt:"09.12.", solution:"Den néngte Dezember"}
+    {prompt:"12.07.", solution:"Den zwieleften Juli"},
+    {prompt:"02.08.", solution:"Den zweeten August"},
+    {prompt:"04.08.", solution:"De véierten August"},
+    {prompt:"06.08.", solution:"De sechsten August"},
+    {prompt:"10.08.", solution:"Den zéngten August"},
+    {prompt:"02.10.", solution:"Den zweeten Oktober"},
+    {prompt:"04.10.", solution:"De véierten Oktober"},
+    {prompt:"06.10.", solution:"De sechsten Oktober"},
+    {prompt:"18.10.", solution:"Den uechtzéngten Oktober"},
+    {prompt:"09.12.", solution:"Den néngten Dezember"}
   ];
 
   let g5Order = shuffle([...Array(g5Tasks.length).keys()]);
@@ -1081,7 +1027,7 @@
     g5RenderTask();
   });
 
-  /* QWERTZ keyboard with SHIFT that also visually uppercases */
+  /* QWERTZ keyboard with SHIFT that visually uppercases */
   const keyboardRows = [
     ['q','w','e','r','t','z','u','i','o','p','ü','é'],
     ['a','s','d','f','g','h','j','k','l','ë','ä'],
@@ -1126,7 +1072,6 @@
       }else{
         const ch = shiftActive ? text.toUpperCase() : text;
         g5Input.value += ch;
-        // one-shot shift (like your P2 games)
         if(shiftActive){
           shiftActive = false;
           updateKeyboardLabels();
