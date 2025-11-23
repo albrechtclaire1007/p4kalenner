@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="lb">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>P4 – De Kalenner</title>
+  <style>
+    /* Font */
+    @font-face{
+      font-family:'Schoulschrëft';
+      src:url('https://raw.githubusercontent.com/albrechtclaire1007/schoulschreft/main/schoulschreft_bold%5B2%5D.TTF') format('truetype');
+      font-weight:bold;
+      font-style:normal;
+      font-display:swap;
+    }
+
+    :root{
+      --purple-mid:#b7a2e5;
+      --purple-light:#ebe3ff;
+      --purple-dark:#6c4aa3;
+      --ink:#2d1844;
+      --white:#fff;
+      --ok:#b7f0c8;
+      --bad:#ffcccc;
+      --border:3px;
+      --radius:18px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{
+      font-family:'Schoulschrëft', system-ui, sans-serif;
+      background:var(--purple-light);
+      color:var(--ink);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:10px;
+    }
+    .app{
+      background:var(--white);
+      border-radius:24px;
+      border:var(--border) solid var(--purple-dark);
+      max-width:1100px;
+      width:100%;
+      padding:16px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.12);
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    h1{
+      text-align:center;
+      font-size:1.7rem;
+      color:var(--purple-dark);
+      margin-bottom:4px;
+    }
+    .subtitle{
+      text-align:center;
+      font-size:0.95rem;
+      opacity:0.8;
+      margin-bottom:6px;
+    }
+
+    /* Nav */
+    .nav{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      justify-content:center;
+      margin-bottom:4px;
+    }
+    .nav button{
+      flex:1 1 120px;
+      padding:6px 8px;
+      border-radius:999px;
+      border:2px solid var(--purple-mid);
+      background:var(--purple-light);
+      color:var(--ink);
+      font-size:0.9rem;
+      cursor:pointer;
+      transition:.15s;
+      white-space:nowrap;
+    }
+    .nav button.active{
+      background:var(--purple-mid);
+      color:var(--white);
+      border-color:var(--purple-dark);
+      transform:translateY(-1px);
+    }
+
+    .games{
+      position:relative;
+      min-height:320px;
+    }
+    .game{
+      display:none;
+      animation:fadeIn .25s ease-out;
+    }
+    .game.active{display:block;}
+
+    @keyframes fadeIn{
+      from{opacity:0;transform:translateY(4px);}
+      to{opacity:1;transform:translateY(0);}
+    }
+
+    .game-inner{
+      border-radius:var(--radius);
+      border:2px solid var(--purple-mid);
+      padding:12px;
+      background:#faf8ff;
+    }
+
+    .game h2{
+      font-size:1.2rem;
+      margin-bottom:4px;
+      color:var(--purple-dark);
+    }
+    .instructions{
+      font-size:0.9rem;
+      margin-bottom:10px;
+    }
+
+    button.primary{
+      padding:6px 14px;
+      border-radius:999px;
+      border:2px solid var(--purple-dark);
+      background:var(--purple-mid);
+      color:var(--white);
+      font-size:0.95rem;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      margin-bottom:8px;
+    }
+    button.secondary{
+      padding:4px 10px;
+      border-radius:999px;
+      border:2px solid var(--purple-mid);
+      background:var(--white);
+      color:var(--ink);
+      font-size:0.85rem;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      margin-top:4px;
+    }
+    button:disabled{
+      opacity:0.5;
+      cursor:default;
+    }
+
+    .feedback{
+      margin-top:8px;
+      min-height:1.4em;
+      font-size:0.95rem;
+    }
+    .feedback.ok{color:#117a3a;}
+    .feedback.bad{color:#b02323;}
+
+    /* GAME 1: Lauschter & klick */
+    .g1-layout{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    @media(min-width:780px){
+      .g1-layout{
+        flex-direction:row;
+      }
+    }
+    .g1-left{
+      flex:0 0 220px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      align-items:flex-start;
+    }
+    .audio-btn{
+      width:56px;
+      height:56px;
+      border-radius:50%;
+      border:3px solid var(--purple-dark);
+      background:var(--purple-mid);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      box-shadow:0 3px 0 rgba(0,0,0,0.15);
+      transition:.12s;
+    }
+    .audio-btn span{
+      width:0;
+      height:0;
+      border-top:10px solid transparent;
+      border-bottom:10px solid transparent;
+      border-left:16px solid #fff;
+      margin-left:2px;
+    }
+    .audio-label{
+      font-size:0.9rem;
+    }
+    .g1-calendar-wrapper{
+      position:relative;
+      flex:1 1 auto;
+      max-width:620px;
+      margin:0 auto;
+    }
+    .g1-calendar-wrapper img{
+      width:100%;
+      display:block;
+      border-radius:var(--radius);
+      border:2px solid var(--purple-mid);
+    }
+    .g1-hotspots{
+      position:absolute;
+      inset:18% 5% 10% 5%; /* tweak if needed to better align to grid */
+      display:grid;
+      grid-template-columns:repeat(7,1fr);
+      grid-template-rows:repeat(6,1fr);
+    }
+    .g1-cell{
+      position:relative;
+      cursor:pointer;
+    }
+    .g1-cell::after{
+      /* invisible number for debugging – set opacity >0 if you want to see mapping */
+      content:attr(data-day);
+      position:absolute;
+      inset:4px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:flex-end;
+      font-size:0.6rem;
+      opacity:0;
+      pointer-events:none;
+    }
+    .g1-cell.correct{
+      background:rgba(183,240,200,0.35);
+      border-radius:8px;
+    }
+    .g1-cell.wrong{
+      background:rgba(255,204,204,0.35);
+      border-radius:8px;
+      animation:shake .16s linear;
+    }
+    @keyframes shake{
+      0%{transform:translateX(0);}
+      25%{transform:translateX(-3px);}
+      50%{transform:translateX(3px);}
+      75%{transform:translateX(-2px);}
+      100%{transform:translateX(0);}
+    }
+
+    /* GAME 2: MCQ Read & click */
+    .g2-question{
+      font-size:1.05rem;
+      margin-bottom:10px;
+    }
+    .g2-options{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(110px,1fr));
+      gap:8px;
+    }
+    .g2-options button{
+      padding:8px;
+      border-radius:var(--radius);
+      border:2px solid var(--purple-mid);
+      background:var(--white);
+      cursor:pointer;
+      font-size:0.95rem;
+    }
+    .g2-options button.correct{
+      background:var(--ok);
+      border-color:#169451;
+    }
+    .g2-options button.wrong{
+      background:var(--bad);
+      border-color:#a52828;
+    }
+
+    /* GAME 3: Spinning date wheels */
+    .g3-display{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:10px;
+    }
+    .wheels{
+      display:flex;
+      align-items:center;
+      gap:3px;
+      padding:10px 14px;
+      border-radius:18px;
+      background:var(--white);
+      border:2px solid var(--purple-mid);
+      font-size:1.4rem;
+    }
+    .wheel{
+      width:26px;
+      height:40px;
+      border-radius:10px;
+      border:2px solid var(--purple-mid);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      position:relative;
+      background:#f9f5ff;
+    }
+    .wheel span{
+      position:absolute;
+      transition:transform .18s;
+    }
+    .wheel.spin span{
+      transform:translateY(110%);
+    }
+    .dot{
+      font-size:1.4rem;
+      padding:0 3px;
+    }
+    .g3-buttons{
+      display:flex;
+      gap:8px;
+      margin-top:4px;
+    }
+
+    /* GAME 4: Matching */
+    .g4-layout{
+      display:grid;
+      grid-template-columns:1.2fr 1fr;
+      gap:8px;
+    }
+    @media(max-width:800px){
+      .g4-layout{
+        grid-template-columns:1fr;
+      }
+    }
+    .g4-list{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .g4-item{
+      padding:6px 8px;
+      border-radius:var(--radius);
+      border:2px solid var(--purple-mid);
+      background:#fff;
+      font-size:0.95rem;
+      cursor:pointer;
+      position:relative;
+    }
+    .g4-item.selected{
+      border-color:var(--purple-dark);
+      box-shadow:0 0 0 2px rgba(108,74,163,0.2);
+    }
+    .g4-slot{
+      margin-top:4px;
+      font-size:0.8rem;
+      opacity:0.8;
+    }
+    .g4-cards{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    .g4-card{
+      padding:6px 10px;
+      border-radius:999px;
+      border:2px solid var(--purple-mid);
+      background:#fff;
+      cursor:pointer;
+      font-size:0.9rem;
+    }
+    .g4-card.used{
+      opacity:0.4;
+      cursor:default;
+    }
+
+    /* GAME 5: Schreif den Datum */
+    .g5-prompt{
+      font-size:1.05rem;
+      margin-bottom:8px;
+    }
+    .g5-input-row{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      margin-bottom:6px;
+    }
+    .g5-input-row input{
+      width:100%;
+      padding:6px 8px;
+      border-radius:var(--radius);
+      border:2px solid var(--purple-mid);
+      font-size:0.95rem;
+      font-family:'Schoulschrëft', system-ui, sans-serif;
+    }
+    .g5-keyboard{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      margin:4px 0;
+    }
+    .g5-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:4px;
+      justify-content:center;
+    }
+    .g5-key{
+      min-width:26px;
+      padding:4px 6px;
+      border-radius:8px;
+      border:1px solid var(--purple-mid);
+      background:#fff;
+      font-size:0.8rem;
+      cursor:pointer;
+    }
+    .g5-key.wide{
+      min-width:50px;
+    }
+    .solution{
+      margin-top:4px;
+      font-size:0.85rem;
+      opacity:0.85;
+    }
+    .progress{
+      margin-top:4px;
+      font-size:0.8rem;
+      opacity:0.8;
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <h1>P4 – De Kalenner</h1>
+  <p class="subtitle">Verstinn, liesen a schreiwen vun Datumer</p>
+
+  <div class="nav">
+    <button class="nav-btn active" data-target="game1">1. Lauschter & klick</button>
+    <button class="nav-btn" data-target="game2">2. Lies & klick</button>
+    <button class="nav-btn" data-target="game3">3. Lies den Datum</button>
+    <button class="nav-btn" data-target="game4">4. Fann de passenden Datum</button>
+    <button class="nav-btn" data-target="game5">5. Schreif den Datum</button>
+  </div>
+
+  <div class="games">
+    <!-- GAME 1 -->
+    <section id="game1" class="game active">
+      <div class="game-inner">
+        <h2>1. Lauschter a klick op den Datum</h2>
+        <p class="instructions">Lauschter d'Zuel a klick duerno op de korrekte Datum um Kalenner.</p>
+        <div class="g1-layout">
+          <div class="g1-left">
+            <button id="g1PlayBtn" class="audio-btn" title="Lauschteren">
+              <span></span>
+            </button>
+            <p class="audio-label">Klick op de Knäppchen fir ze lauschteren.</p>
+            <button id="g1NextBtn" class="secondary">Nächsten Datum</button>
+            <div id="g1Feedback" class="feedback"></div>
+          </div>
+          <div class="g1-calendar-wrapper">
+            <img id="g1CalendarImg"
+                 src="https://i.postimg.cc/fyq9S0fD/Beige-and-Brown-Illustrated-Cute-Autumn-November-2023-Monthly-Calendar.png"
+                 alt="November 2023 Kalenner">
+            <div class="g1-hotspots" id="g1Hotspots">
+              <!-- 7 x 6 grid cells -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GAME 2 -->
+    <section id="game2" class="game">
+      <div class="game-inner">
+        <h2>2. Lies den Datum a klick op déi richteg Äntwert</h2>
+        <p class="instructions">Lies den Datum a wielt déi richteg Zueleschreiwweis (dd.mm.).</p>
+        <div id="g2Question" class="g2-question"></div>
+        <div id="g2Options" class="g2-options"></div>
+        <button id="g2NextBtn" class="secondary" style="margin-top:8px;">Nächst Fro</button>
+        <div id="g2Feedback" class="feedback"></div>
+      </div>
+    </section>
+
+    <!-- GAME 3 -->
+    <section id="game3" class="game">
+      <div class="game-inner">
+        <h2>3. Lies den Datum (Spannréider)</h2>
+        <p class="instructions">Kuck op d'Zuelen a lies de ganzen Datum vir (den Dag, de Mount an d'Joer).</p>
+        <div class="g3-display">
+          <div class="wheels" id="g3Wheels">
+            <div class="wheel" data-pos="0"><span>0</span></div>
+            <div class="wheel" data-pos="1"><span>1</span></div>
+            <div class="dot">.</div>
+            <div class="wheel" data-pos="2"><span>0</span></div>
+            <div class="wheel" data-pos="3"><span>1</span></div>
+            <div class="dot">.</div>
+            <div class="wheel" data-pos="4"><span>2</span></div>
+            <div class="wheel" data-pos="5"><span>0</span></div>
+            <div class="wheel" data-pos="6"><span>2</span></div>
+            <div class="wheel" data-pos="7"><span>4</span></div>
+          </div>
+          <div class="g3-buttons">
+            <button id="g3PrevBtn" class="secondary">◀️ Zréck</button>
+            <button id="g3NextBtn" class="primary">▶️ Nächsten Datum</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GAME 4 -->
+    <section id="game4" class="game">
+      <div class="game-inner">
+        <h2>4. Fann de passenden Datum</h2>
+        <p class="instructions">Klick fir e Saz aus ze wielen an dono op déi passend Zueleschreiwweis ze klicken.</p>
+        <div class="g4-layout">
+          <div id="g4List" class="g4-list"></div>
+          <div class="g4-cards" id="g4Cards"></div>
+        </div>
+        <button id="g4ResetBtn" class="secondary">Nach eng Kéier</button>
+        <div id="g4Feedback" class="feedback"></div>
+      </div>
+    </section>
+
+    <!-- GAME 5 -->
+    <section id="game5" class="game">
+      <div class="game-inner">
+        <h2>5. Schreif den Datum</h2>
+        <p class="instructions">Kuck op d'Zueleschreiwweis a schreiw de ganzen Datum (den/de + Zuel + Mount).</p>
+        <div id="g5Prompt" class="g5-prompt"></div>
+        <div class="g5-input-row">
+          <input id="g5Input" type="text" autocomplete="off"
+                 placeholder="Den dräizéngte Mäerz ..." />
+        </div>
+        <div class="g5-keyboard" id="g5Keyboard">
+          <!-- keyboard rows will be filled by JS -->
+        </div>
+        <button id="g5CheckBtn" class="primary">Kontrolléier</button>
+        <button id="g5NextBtn" class="secondary">Nächst</button>
+        <div id="g5Feedback" class="feedback"></div>
+        <div id="g5Solution" class="solution"></div>
+        <div id="g5Progress" class="progress"></div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script>
+  /* ------------ NAV ------------ */
+  const navButtons = document.querySelectorAll('.nav-btn');
+  const games = document.querySelectorAll('.game');
+  navButtons.forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      navButtons.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const target = btn.dataset.target;
+      games.forEach(g=>g.classList.remove('active'));
+      document.getElementById(target).classList.add('active');
+    });
+  });
+
+  /* ------------ GAME 1: Lauschter & Klick ------------ */
+  const AUDIO_BASE_URL =
+    "https://github.com/albrechtclaire1007/p4kalenner/raw/refs/heads/main/";
+
+  const g1Audio = new Audio();
+  const g1PlayBtn = document.getElementById('g1PlayBtn');
+  const g1NextBtn = document.getElementById('g1NextBtn');
+  const g1Feedback = document.getElementById('g1Feedback');
+  const g1Hotspots = document.getElementById('g1Hotspots');
+
+  // Create 7x6 transparent cells
+  const rows = 6;
+  const cols = 7;
+  for(let r=0;r<rows;r++){
+    for(let c=0;c<cols;c++){
+      const cell = document.createElement('div');
+      cell.className = 'g1-cell';
+      cell.dataset.row = r;
+      cell.dataset.col = c;
+      g1Hotspots.appendChild(cell);
+    }
+  }
+
+  // Map real November 2023 days (Mon-first calendar)
+  // 1 November 2023 is Wednesday -> index 2 (Mon=0)
+  const startOffset = 2; // cells before day 1 in row 0
+  const totalDays = 30;
+  const cells = Array.from(document.querySelectorAll('.g1-cell'));
+  for(let day=1; day<=totalDays; day++){
+    const index = (day - 1) + startOffset;
+    const r = Math.floor(index / cols);
+    const c = index % cols;
+    const cell = cells.find(el => +el.dataset.row === r && +el.dataset.col === c);
+    if(cell){
+      cell.dataset.day = day;
+    }
+  }
+
+  let g1CurrentDay = null;
+  let g1Locked = false;
+
+  function g1SetTask(){
+    g1Locked = false;
+    g1Feedback.textContent = '';
+    cells.forEach(c=>{c.classList.remove('correct','wrong');});
+    g1CurrentDay = Math.floor(Math.random()*totalDays)+1;
+    const filename = `P4__${g1CurrentDay}..mp3`;
+    g1Audio.src = AUDIO_BASE_URL + filename;
+  }
+
+  g1PlayBtn.addEventListener('click', ()=>{
+    if(!g1Audio.src) g1SetTask();
+    g1Audio.currentTime = 0;
+    g1Audio.play();
+  });
+
+  g1NextBtn.addEventListener('click', ()=>{
+    g1SetTask();
+    g1Feedback.textContent = 'Lauschter an da klick op den Datum.';
+    g1Feedback.className = 'feedback';
+  });
+
+  cells.forEach(cell=>{
+    cell.addEventListener('click', ()=>{
+      if(g1Locked || !cell.dataset.day) return;
+      const chosen = Number(cell.dataset.day);
+      if(chosen === g1CurrentDay){
+        cell.classList.add('correct');
+        g1Feedback.textContent = `Super! Dat war den ${g1CurrentDay}.`;
+        g1Feedback.className = 'feedback ok';
+        g1Locked = true;
+      }else{
+        cell.classList.add('wrong');
+        setTimeout(()=>cell.classList.remove('wrong'),200);
+        g1Feedback.textContent = 'Nee, probéier nach eng Kéier.';
+        g1Feedback.className = 'feedback bad';
+      }
+    });
+  });
+
+  // initialise first task
+  g1SetTask();
+  g1Feedback.textContent = 'Lauschter an da klick op den Datum.';
+
+  /* ------------ GAME 2: Read & MCQ ------------ */
+  const g2QuestionEl = document.getElementById('g2Question');
+  const g2OptionsEl = document.getElementById('g2Options');
+  const g2Feedback = document.getElementById('g2Feedback');
+  const g2NextBtn = document.getElementById('g2NextBtn');
+
+  const g2Tasks = [
+    {text:"Den éischten Januar", correct:"01.01.",
+     others:["10.01.","01.10.","11.01.","31.01."]},
+    {text:"Den drëtten Februar", correct:"03.02.",
+     others:["02.03.","30.02.","13.02.","03.12."]},
+    {text:"Den zéngten Mäerz", correct:"10.03.",
+     others:["03.10.","01.03.","10.05.","20.03."]},
+    {text:"De fofzéngte Mee", correct:"15.05.",
+     others:["05.15.","25.05.","15.03.","05.10."]},
+    {text:"Den eenanzwanzegste Oktober", correct:"21.10.",
+     others:["12.10.","21.01.","20.10.","22.10."]},
+    {text:"Den dräizéngte Mäerz", correct:"13.03.",
+     others:["31.03.","13.05.","03.13.","30.03."]},
+    {text:"Den nénganzwanzegsten November", correct:"29.11.",
+     others:["19.11.","29.10.","28.11.","30.11."]}
+  ];
+
+  let g2Index = 0;
+
+  function shuffle(array){
+    return array
+      .map(v=>({v, sort:Math.random()}))
+      .sort((a,b)=>a.sort-b.sort)
+      .map(({v})=>v);
+  }
+
+  function g2RenderTask(){
+    g2Feedback.textContent = '';
+    g2Feedback.className = 'feedback';
+    g2OptionsEl.innerHTML = '';
+    const task = g2Tasks[g2Index];
+    g2QuestionEl.textContent = task.text;
+
+    const options = shuffle([task.correct, ...task.others]);
+    options.forEach(opt=>{
+      const btn = document.createElement('button');
+      btn.textContent = opt;
+      btn.addEventListener('click', ()=>{
+        const isCorrect = opt === task.correct;
+        Array.from(g2OptionsEl.children).forEach(b=>b.disabled=true);
+        if(isCorrect){
+          btn.classList.add('correct');
+          g2Feedback.textContent = "Super, dat ass richteg!";
+          g2Feedback.className = 'feedback ok';
+        }else{
+          btn.classList.add('wrong');
+          g2Feedback.textContent = `Nee, richteg wier: ${task.correct}`;
+          g2Feedback.className = 'feedback bad';
+          // highlight correct
+          Array.from(g2OptionsEl.children).forEach(b=>{
+            if(b.textContent===task.correct){
+              b.classList.add('correct');
+            }
+          });
+        }
+      });
+      g2OptionsEl.appendChild(btn);
+    });
+  }
+
+  g2NextBtn.addEventListener('click', ()=>{
+    g2Index = (g2Index+1) % g2Tasks.length;
+    g2RenderTask();
+  });
+
+  g2RenderTask();
+
+  /* ------------ GAME 3: Spinning date wheels ------------ */
+  const g3Wheels = document.querySelectorAll('.wheel');
+  const g3PrevBtn = document.getElementById('g3PrevBtn');
+  const g3NextBtn = document.getElementById('g3NextBtn');
+
+  const g3History = [];
+  let g3Pointer = -1;
+
+  function daysInMonth(month, year){
+    return new Date(year, month, 0).getDate();
+  }
+
+  function pad(num, len){
+    return num.toString().padStart(len,'0');
+  }
+
+  function generateRandomDate(){
+    const year = 2000 + Math.floor(Math.random()*100); // 2000–2099
+    const month = 1 + Math.floor(Math.random()*12);
+    const dim = daysInMonth(month, year);
+    const day = 1 + Math.floor(Math.random()*dim);
+    return {day, month, year};
+  }
+
+  function dateToDigits(d){
+    const dd = pad(d.day,2);
+    const mm = pad(d.month,2);
+    const yyyy = pad(d.year,4);
+    return (dd + mm + yyyy).split('');
+  }
+
+  function g3ShowDate(d, pushToHistory=true){
+    const digits = dateToDigits(d);
+    g3Wheels.forEach((wheel,i)=>{
+      const span = wheel.querySelector('span');
+      span.textContent = digits[i];
+      wheel.classList.add('spin');
+      setTimeout(()=>wheel.classList.remove('spin'),180);
+    });
+    if(pushToHistory){
+      g3History.splice(g3Pointer+1); // cut any "future"
+      g3History.push(d);
+      g3Pointer = g3History.length-1;
+    }
+    g3PrevBtn.disabled = g3Pointer<=0;
+  }
+
+  g3NextBtn.addEventListener('click', ()=>{
+    const d = generateRandomDate();
+    g3ShowDate(d,true);
+  });
+
+  g3PrevBtn.addEventListener('click', ()=>{
+    if(g3Pointer>0){
+      g3Pointer--;
+      const d = g3History[g3Pointer];
+      g3ShowDate(d,false);
+    }
+  });
+
+  // init with one date
+  g3ShowDate(generateRandomDate(), true);
+
+  /* ------------ GAME 4: Matching ------------ */
+  const g4ListEl = document.getElementById('g4List');
+  const g4CardsEl = document.getElementById('g4Cards');
+  const g4Feedback = document.getElementById('g4Feedback');
+  const g4ResetBtn = document.getElementById('g4ResetBtn');
+
+  const g4Pairs = [
+    {id:1, text:"Den éischten Januar", numeric:"01.01."},
+    {id:2, text:"Den drëtten Februar", numeric:"03.02."},
+    {id:3, text:"Den zéngten Mäerz", numeric:"10.03."},
+    {id:4, text:"De fofzéngte Mee", numeric:"15.05."},
+    {id:5, text:"Den eenanzwanzegste Oktober", numeric:"21.10."},
+    {id:6, text:"Den nénganzwanzegsten November", numeric:"29.11."}
+  ];
+
+  let g4SelectedSentenceId = null;
+
+  function g4Render(){
+    g4Feedback.textContent='';
+    g4ListEl.innerHTML='';
+    g4CardsEl.innerHTML='';
+    g4SelectedSentenceId = null;
+
+    g4Pairs.forEach(pair=>{
+      const item = document.createElement('div');
+      item.className = 'g4-item';
+      item.dataset.id = pair.id;
+      item.innerHTML = `<div>${pair.text}</div><div class="g4-slot" data-slot-for="${pair.id}">...</div>`;
+      item.addEventListener('click', ()=>{
+        Array.from(g4ListEl.children).forEach(el=>el.classList.remove('selected'));
+        item.classList.add('selected');
+        g4SelectedSentenceId = pair.id;
+      });
+      g4ListEl.appendChild(item);
+    });
+
+    const shuffled = shuffle(g4Pairs.slice());
+    shuffled.forEach(pair=>{
+      const card = document.createElement('div');
+      card.className = 'g4-card';
+      card.dataset.id = pair.id;
+      card.textContent = pair.numeric;
+      card.addEventListener('click', ()=>{
+        if(card.classList.contains('used')) return;
+        if(!g4SelectedSentenceId){
+          g4Feedback.textContent = "Wielt fir d'éischt e Saz.";
+          g4Feedback.className = 'feedback bad';
+          return;
+        }
+        const correctId = card.dataset.id;
+        if(Number(correctId) === Number(g4SelectedSentenceId)){
+          // place card under sentence
+          const slot = g4ListEl.querySelector(`[data-slot-for="${g4SelectedSentenceId}"]`);
+          slot.textContent = card.textContent;
+          card.classList.add('used');
+          g4Feedback.textContent = "Super! Dat passt.";
+          g4Feedback.className = 'feedback ok';
+          // clear sentence selection
+          Array.from(g4ListEl.children).forEach(el=>el.classList.remove('selected'));
+          g4SelectedSentenceId = null;
+
+          // check if all matched
+          const allSlotsFilled = g4Pairs.every(p=>{
+            const s = g4ListEl.querySelector(`[data-slot-for="${p.id}"]`);
+            return s && s.textContent !== '...';
+          });
+          if(allSlotsFilled){
+            g4Feedback.textContent = "Bravo! All Datumer si richteg gepaart.";
+          }
+        }else{
+          g4Feedback.textContent = "Nee, deen Datum passt net zu deem Saz.";
+          g4Feedback.className = 'feedback bad';
+        }
+      });
+      g4CardsEl.appendChild(card);
+    });
+  }
+
+  g4ResetBtn.addEventListener('click', g4Render);
+  g4Render();
+
+  /* ------------ GAME 5: Schreif den Datum ------------ */
+  const g5Prompt = document.getElementById('g5Prompt');
+  const g5Input = document.getElementById('g5Input');
+  const g5Keyboard = document.getElementById('g5Keyboard');
+  const g5CheckBtn = document.getElementById('g5CheckBtn');
+  const g5NextBtn = document.getElementById('g5NextBtn');
+  const g5Feedback = document.getElementById('g5Feedback');
+  const g5Solution = document.getElementById('g5Solution');
+  const g5Progress = document.getElementById('g5Progress');
+
+  const g5Tasks = [
+    {prompt:"01.01.", solution:"Den éischten Januar"},
+    {prompt:"03.02.", solution:"Den drëtten Februar"},
+    {prompt:"10.03.", solution:"Den zéngten Mäerz"},
+    {prompt:"15.05.", solution:"De fofzéngte Mee"},
+    {prompt:"21.10.", solution:"Den eenanzwanzegste Oktober"},
+    {prompt:"29.11.", solution:"Den nénganzwanzegsten November"}
+  ];
+  let g5Index = 0;
+
+  function normalize(str){
+    return str
+      .toLowerCase()
+      .replace(/\s+/g,' ')
+      .trim();
+  }
+
+  function g5RenderTask(){
+    const task = g5Tasks[g5Index];
+    g5Prompt.textContent = `Schreiw: ${task.prompt}`;
+    g5Input.value = '';
+    g5Input.focus();
+    g5Feedback.textContent='';
+    g5Feedback.className='feedback';
+    g5Solution.textContent='';
+    g5Progress.textContent = `${g5Index+1} / ${g5Tasks.length}`;
+  }
+
+  g5CheckBtn.addEventListener('click', ()=>{
+    const task = g5Tasks[g5Index];
+    const user = normalize(g5Input.value);
+    const correct = normalize(task.solution);
+    if(!user){
+      g5Feedback.textContent = "Schreiw fir d'éischt eppes.";
+      g5Feedback.className = 'feedback bad';
+      return;
+    }
+    if(user === correct){
+      g5Feedback.textContent = "Super, dat ass genee esou geschriwwen!";
+      g5Feedback.className = 'feedback ok';
+      g5Solution.textContent = '';
+    }else{
+      g5Feedback.textContent = "Net ganz richteg.";
+      g5Feedback.className = 'feedback bad';
+      g5Solution.textContent = `Sou schreiwe mir et: ${task.solution}`;
+    }
+  });
+
+  g5NextBtn.addEventListener('click', ()=>{
+    g5Index = (g5Index+1) % g5Tasks.length;
+    g5RenderTask();
+  });
+
+  // On-screen keyboard
+  const keyboardRows = [
+    ['d','e','n',' ','d','e'],
+    ['é','ë','ä','a','b','c','f','g','h','i','j','k','l','m'],
+    ['n','o','p','q','r','s','t','u','v','w','x','y','z'],
+    ['SPACE','BACK']
+  ];
+
+  function addKey(text, wide=false){
+    const btn = document.createElement('button');
+    btn.className = 'g5-key' + (wide?' wide':'');
+    btn.textContent = (text==='SPACE') ? '␣' : (text==='BACK' ? '⌫' : text);
+    btn.addEventListener('click', ()=>{
+      if(text==='SPACE'){
+        g5Input.value += ' ';
+      }else if(text==='BACK'){
+        g5Input.value = g5Input.value.slice(0,-1);
+      }else{
+        g5Input.value += text;
+      }
+      g5Input.focus();
+    });
+    return btn;
+  }
+
+  keyboardRows.forEach(row=>{
+    const rowDiv = document.createElement('div');
+    rowDiv.className='g5-row';
+    row.forEach(key=>{
+      const wide = (key==='SPACE'||key==='BACK');
+      rowDiv.appendChild(addKey(key,wide));
+    });
+    g5Keyboard.appendChild(rowDiv);
+  });
+
+  g5RenderTask();
+</script>
+</body>
+</html>
