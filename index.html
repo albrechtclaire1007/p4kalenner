@@ -4,11 +4,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>P4 – De Kalenner</title>
+
   <style>
-    /* Font */
+    /* FONT */
     @font-face{
       font-family:'Schoulschrëft';
-      src:url('https://raw.githubusercontent.com/albrechtclaire1007/schoulschreft/main/schoulschreft_bold%5B2%5D.TTF') format('truetype');
+      src:url('https://raw.githubusercontent.com/albrechtclaire1007/schoulschreft/main/schoulschreft_bold%5B2%5D.TTF')
+           format('truetype');
       font-weight:bold;
       font-style:normal;
       font-display:swap;
@@ -22,21 +24,24 @@
       --white:#fff;
       --ok:#b7f0c8;
       --bad:#ffcccc;
-      --radius:18px;
     }
 
-    *{box-sizing:border-box;margin:0;padding:0;}
+    *{ margin:0; padding:0; box-sizing:border-box; }
+
     body{
       font-family:'Schoulschrëft', system-ui, sans-serif;
       background:var(--purple-light);
+      padding:16px;
       color:var(--ink);
       min-height:100vh;
-      padding:16px;
-    }
-    button{
-      font-family:'Schoulschrëft', system-ui, sans-serif;
     }
 
+    button{
+      font-family:'Schoulschrëft', system-ui, sans-serif;
+      cursor:pointer;
+    }
+
+    /* TOP BAR */
     .top-bar{
       max-width:1100px;
       margin:0 auto 8px;
@@ -50,21 +55,20 @@
     }
     .top-bar-title{
       font-size:1.05rem;
-      text-align:center;
       flex:1;
+      text-align:center;
     }
     .top-arrow{
       width:28px;
       height:28px;
-      border-radius:50%;
-      border:2px solid var(--white);
-      background:transparent;
-      color:var(--white);
       display:flex;
       align-items:center;
       justify-content:center;
-      cursor:pointer;
+      border-radius:50%;
+      border:2px solid var(--white);
       font-size:1.1rem;
+      background:transparent;
+      color:var(--white);
     }
     .top-arrow:disabled{
       opacity:0.4;
@@ -82,72 +86,50 @@
     .games{
       max-width:1100px;
       margin:0 auto;
-      min-height:320px;
-    }
-    .game{
-      display:none;
-      animation:fadeIn .25s ease-out;
-    }
-    .game.active{display:block;}
-
-    @keyframes fadeIn{
-      from{opacity:0;transform:translateY(4px);}
-      to{opacity:1;transform:translateY(0);}
     }
 
-    .game h2{
+    .game{ display:none; }
+    .game.active{ display:block; }
+
+    h2{
       font-size:1.1rem;
       margin-bottom:4px;
-      color:var(--purple-dark);
       text-align:center;
+      color:var(--purple-dark);
     }
     .instructions{
-      font-size:0.9rem;
-      margin-bottom:10px;
       text-align:center;
+      font-size:0.9rem;
+      opacity:0.8;
+      margin-bottom:10px;
     }
 
-    button.primary{
+    .primary{
       padding:6px 14px;
       border-radius:999px;
       border:2px solid var(--purple-dark);
       background:var(--purple-mid);
       color:var(--white);
       font-size:0.9rem;
-      cursor:pointer;
-      display:inline-flex;
-      align-items:center;
-      gap:4px;
-      margin-bottom:6px;
     }
-    button.secondary{
+    .secondary{
       padding:4px 10px;
       border-radius:999px;
       border:2px solid var(--purple-mid);
-      background:var(--white);
+      background:white;
       color:var(--ink);
       font-size:0.85rem;
-      cursor:pointer;
-      display:inline-flex;
-      align-items:center;
-      gap:4px;
-      margin-top:2px;
-    }
-    button:disabled{
-      opacity:0.5;
-      cursor:default;
     }
 
     .feedback{
       margin-top:6px;
       min-height:1.4em;
       font-size:0.9rem;
-      text-align:left;
     }
-    .feedback.ok{color:#117a3a;}
-    .feedback.bad{color:#b02323;}
+    .feedback.ok{ color:#117a3a; }
+    .feedback.bad{ color:#b02323; }
 
-    /* GAME 1 – Lauschter a klick */
+    /* GAME 1 */
     .g1-layout{
       display:flex;
       flex-direction:column;
@@ -162,11 +144,10 @@
       }
     }
     .g1-left{
-      flex:0 0 240px;
+      flex:0 0 250px;
       display:flex;
       flex-direction:column;
       gap:6px;
-      align-items:flex-start;
     }
     .audio-btn{
       width:56px;
@@ -177,9 +158,7 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      cursor:pointer;
-      box-shadow:0 3px 0 rgba(0,0,0,0.15);
-      transition:.12s;
+      margin-bottom:6px;
     }
     .audio-btn span{
       width:0;
@@ -189,35 +168,23 @@
       border-left:16px solid #fff;
       margin-left:2px;
     }
-    .audio-label{
-      font-size:0.9rem;
-    }
 
     .g1-calendar{
-      flex:1 1 auto;
+      width:100%;
       max-width:600px;
-      background:var(--white);
-      border-radius:24px;
+      background:white;
+      box-shadow:0 6px 16px rgba(0,0,0,0.1);
       padding:10px 14px 14px;
-      box-shadow:0 6px 16px rgba(0,0,0,0.12);
-    }
-    .g1-cal-title{
-      text-align:center;
-      font-size:1rem;
-      margin-bottom:6px;
-      color:var(--purple-dark);
+      border-radius:24px;
     }
     .g1-weekdays{
       display:grid;
       grid-template-columns:repeat(7,1fr);
-      font-size:0.8rem;
-      margin-bottom:4px;
       text-align:center;
       opacity:0.8;
+      margin-bottom:4px;
     }
-    .g1-weekdays div{
-      padding:2px 0;
-    }
+
     .g1-cal-grid{
       display:grid;
       grid-template-columns:repeat(7,1fr);
@@ -229,7 +196,6 @@
       border:2px solid #e0d6ff;
       background:#fdfbff;
       font-size:0.9rem;
-      cursor:pointer;
       display:flex;
       align-items:flex-start;
       justify-content:flex-end;
@@ -237,30 +203,21 @@
     }
     .g1-day.correct{
       background:var(--ok);
-      border-color:#169451;
+      border-color:#117a3a;
     }
     .g1-day.wrong{
       background:var(--bad);
-      border-color:#a52828;
-      animation:shake .16s linear;
-    }
-    @keyframes shake{
-      0%{transform:translateX(0);}
-      25%{transform:translateX(-3px);}
-      50%{transform:translateX(3px);}
-      75%{transform:translateX(-2px);}
-      100%{transform:translateX(0);}
+      border-color:#b02323;
     }
 
-    /* GAME 2 – Lies a klick */
+    /* GAME 2 */
     .g2-wrapper{
       max-width:600px;
       margin:0 auto;
     }
     .g2-question{
-      font-size:1rem;
-      margin-bottom:8px;
       text-align:center;
+      margin-bottom:6px;
     }
     .g2-options{
       display:grid;
@@ -269,204 +226,162 @@
     }
     .g2-options button{
       padding:6px;
-      border-radius:var(--radius);
+      border-radius:12px;
       border:2px solid var(--purple-mid);
-      background:var(--white);
-      cursor:pointer;
-      font-size:0.9rem;
+      background:white;
     }
-    .g2-options button.correct{
+    .g2-options .correct{
       background:var(--ok);
-      border-color:#169451;
+      border-color:#117a3a;
     }
-    .g2-options button.wrong{
+    .g2-options .wrong{
       background:var(--bad);
-      border-color:#a52828;
+      border-color:#b02323;
     }
 
-    /* GAME 3 – wheels */
+    /* GAME 3 */
     .g3-display{
       display:flex;
       flex-direction:column;
       align-items:center;
+      margin-top:10px;
       gap:10px;
-      margin-top:6px;
     }
+
+    .g3-big{
+      padding:8px 14px;
+      border-radius:999px;
+      background:white;
+      border:2px solid var(--purple-mid);
+      font-size:1.6rem;
+      box-shadow:0 4px 12px rgba(0,0,0,0.1);
+    }
+
     .wheels{
       display:flex;
-      align-items:center;
       gap:3px;
       padding:10px 14px;
       border-radius:18px;
-      background:var(--white);
+      background:white;
       border:2px solid var(--purple-mid);
       font-size:1.4rem;
-      box-shadow:0 5px 12px rgba(0,0,0,0.12);
     }
     .wheel{
       width:26px;
       height:40px;
       border-radius:10px;
       border:2px solid var(--purple-mid);
+      background:#f9f5ff;
+      position:relative;
+      overflow:hidden;
       display:flex;
       align-items:center;
       justify-content:center;
-      overflow:hidden;
-      position:relative;
-      background:#f9f5ff;
     }
     .wheel span{
       position:absolute;
-      animation:none;
-    }
-    .dot{
-      font-size:1.4rem;
-      padding:0 3px;
-    }
-    @keyframes wheelSpin{
-      0%{transform:translateY(-110%);}
-      100%{transform:translateY(0);}
-    }
-    .g3-buttons{
-      display:flex;
-      gap:8px;
-      margin-top:2px;
     }
 
-    /* GAME 4 – matching */
+    /* GAME 4 */
     .g4-layout{
       display:grid;
       grid-template-columns:1.1fr 0.9fr;
       gap:12px;
-      margin-top:6px;
-      align-items:flex-start;
     }
     @media(max-width:900px){
-      .g4-layout{
-        grid-template-columns:1fr;
-      }
+      .g4-layout{ grid-template-columns:1fr; }
     }
     .g4-box{
-      border-radius:24px;
       background:rgba(183,162,229,0.15);
       padding:8px;
-      box-shadow:0 5px 12px rgba(0,0,0,0.08);
-    }
-    .g4-box h3{
-      font-size:0.95rem;
-      margin-bottom:4px;
-      color:var(--purple-dark);
-      text-align:center;
+      border-radius:18px;
+      box-shadow:0 5px 12px rgba(0,0,0,0.1);
     }
     .g4-list{
       display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+      grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
       gap:4px;
     }
     .g4-item{
       padding:5px 7px;
-      border-radius:14px;
+      background:white;
+      border-radius:12px;
       border:2px solid var(--purple-mid);
-      background:#fff;
       font-size:0.9rem;
-      cursor:pointer;
     }
     .g4-item.selected{
       border-color:var(--purple-dark);
-      box-shadow:0 0 0 2px rgba(108,74,163,0.2);
     }
     .g4-item.matched{
       background:var(--ok);
-      border-color:#169451;
+      border-color:#117a3a;
     }
+
     .g4-cards{
       display:flex;
       flex-wrap:wrap;
       gap:6px;
-      margin-top:2px;
       justify-content:center;
     }
     .g4-card{
       padding:5px 9px;
       border-radius:999px;
       border:2px solid var(--purple-mid);
-      background:#fff;
-      cursor:pointer;
-      font-size:0.9rem;
+      background:white;
     }
     .g4-card.used{
       opacity:0.4;
       cursor:default;
     }
 
-    /* GAME 5 – write date */
+    /* GAME 5 */
     .g5-wrapper{
       max-width:800px;
       margin:0 auto;
     }
-    .g5-prompt{
-      font-size:1.0rem;
-      margin-bottom:6px;
-      text-align:left;
-    }
-    .g5-input-row{
-      display:flex;
-      flex-direction:column;
-      gap:4px;
-      margin-bottom:4px;
-    }
+    .g5-prompt{ font-size:1rem; margin-bottom:6px; }
     .g5-input-row input{
       width:100%;
       padding:6px 8px;
       border-radius:999px;
       border:2px solid var(--purple-mid);
       font-size:0.95rem;
-      font-family:'Schoulschrëft', system-ui, sans-serif;
-      background:#fff;
     }
+
     .g5-keyboard{
       display:flex;
       flex-direction:column;
       gap:3px;
-      margin:4px 0 6px;
-      align-items:center;
+      margin:6px 0;
     }
     .g5-row{
       display:flex;
+      justify-content:center;
       flex-wrap:wrap;
       gap:3px;
-      justify-content:center;
     }
     .g5-key{
       min-width:26px;
       padding:4px 6px;
       border-radius:8px;
+      background:white;
       border:1px solid var(--purple-mid);
-      background:#fff;
       font-size:0.8rem;
-      cursor:pointer;
-      text-align:center;
     }
-    .g5-key.wide{
-      min-width:50px;
-    }
+    .g5-key.wide{ min-width:50px; }
     .g5-key.shift-active{
       background:var(--purple-mid);
-      color:var(--white);
+      color:white;
     }
-    .solution{
-      margin-top:2px;
-      font-size:0.8rem;
-      opacity:0.85;
-    }
-    .progress{
-      margin-top:2px;
-      font-size:0.8rem;
-      opacity:0.8;
-    }
+
+    .solution{ font-size:0.85rem; opacity:0.85; }
+    .progress{ font-size:0.8rem; opacity:0.8; }
   </style>
 </head>
+
 <body>
+
+  <!-- TOP BAR -->
   <div class="top-bar">
     <button id="topPrev" class="top-arrow">‹</button>
     <div id="topTitle" class="top-bar-title">1. Lauschter a klick</div>
@@ -475,25 +390,27 @@
   <p class="subtitle">P4 – De Kalenner: Datumer liesen a schreiwen</p>
 
   <div class="games">
+
     <!-- GAME 1 -->
     <section id="game1" class="game active">
       <h2>1. Lauschter a klick</h2>
       <p class="instructions">Lauschter den Datum a klick duerno op déi richteg Zuel um Kalenner.</p>
+
       <div class="g1-layout">
         <div class="g1-left">
-          <button id="g1PlayBtn" class="audio-btn" title="Lauschteren">
+          <button id="g1PlayBtn" class="audio-btn">
             <span></span>
           </button>
-          <p class="audio-label">Klick op de Knäppchen fir ze lauschteren an duerno op den Datum.</p>
+          <p class="audio-label">Klick fir ze lauschteren.</p>
           <button id="g1NextBtn" class="secondary">Nächsten Datum</button>
           <div id="g1Feedback" class="feedback"></div>
         </div>
+
         <div class="g1-calendar">
-          <div class="g1-cal-title">Kalenner</div>
           <div class="g1-weekdays">
             <div>Mo</div><div>Di</div><div>Më</div><div>Do</div><div>Fr</div><div>Sa</div><div>So</div>
           </div>
-          <div class="g1-cal-grid" id="g1CalGrid"></div>
+          <div id="g1CalGrid" class="g1-cal-grid"></div>
         </div>
       </div>
     </section>
@@ -505,7 +422,10 @@
       <div class="g2-wrapper">
         <div id="g2Question" class="g2-question"></div>
         <div id="g2Options" class="g2-options"></div>
-        <div style="margin-top:6px;display:flex;justify-content:center;gap:8px;">
+        <button id="g2CheckWritten" class="secondary" style="margin-top:6px;">
+          Weis mer de geschriwwenen Datum
+        </button>
+        <div style="text-align:center;margin-top:6px;">
           <button id="g2NextBtn" class="secondary">Nächst Fro</button>
         </div>
         <div id="g2Feedback" class="feedback"></div>
@@ -515,23 +435,27 @@
     <!-- GAME 3 -->
     <section id="game3" class="game">
       <h2>3. Lies den Datum</h2>
-      <p class="instructions">Kuck op d'Zuelen a lies de ganzen Datum vir (Dag, Mount an d'Joer).</p>
+      <p class="instructions">Kuck op d'Zuelen a lies de ganzen Datum vir.</p>
+
       <div class="g3-display">
+        <div id="g3Big" class="g3-big"></div>
+
         <div class="wheels" id="g3Wheels">
-          <div class="wheel" data-pos="0"><span>0</span></div>
-          <div class="wheel" data-pos="1"><span>1</span></div>
+          <div class="wheel"><span>0</span></div>
+          <div class="wheel"><span>1</span></div>
           <div class="dot">.</div>
-          <div class="wheel" data-pos="2"><span>0</span></div>
-          <div class="wheel" data-pos="3"><span>1</span></div>
+          <div class="wheel"><span>0</span></div>
+          <div class="wheel"><span>1</span></div>
           <div class="dot">.</div>
-          <div class="wheel" data-pos="4"><span>2</span></div>
-          <div class="wheel" data-pos="5"><span>0</span></div>
-          <div class="wheel" data-pos="6"><span>2</span></div>
-          <div class="wheel" data-pos="7"><span>4</span></div>
+          <div class="wheel"><span>2</span></div>
+          <div class="wheel"><span>0</span></div>
+          <div class="wheel"><span>2</span></div>
+          <div class="wheel"><span>4</span></div>
         </div>
-        <div class="g3-buttons">
+
+        <div style="display:flex;gap:8px;">
           <button id="g3PrevBtn" class="secondary">◀️ Zréck</button>
-          <button id="g3NextBtn" class="primary">▶️ Nächsten Datum</button>
+          <button id="g3NextBtn" class="primary">▶️ Nächst</button>
         </div>
       </div>
     </section>
@@ -540,73 +464,74 @@
     <section id="game4" class="game">
       <h2>4. Fann de passenden Datum</h2>
       <p class="instructions">Wielt e Saz a klick duerno op déi passend Zueleschreifweis.</p>
+
       <div class="g4-layout">
         <div class="g4-box">
           <h3>Datumer am Saz</h3>
           <div id="g4List" class="g4-list"></div>
         </div>
+
         <div class="g4-box">
           <h3>Zueleschreifweis</h3>
           <div id="g4Cards" class="g4-cards"></div>
         </div>
       </div>
-      <div style="margin-top:6px;display:flex;justify-content:center;">
+
+      <div style="text-align:center;margin-top:8px;">
         <button id="g4ResetBtn" class="secondary">Nach eng Kéier</button>
       </div>
+
       <div id="g4Feedback" class="feedback"></div>
     </section>
 
     <!-- GAME 5 -->
     <section id="game5" class="game">
       <h2>5. Schreif den Datum</h2>
+
       <div class="g5-wrapper">
         <div id="g5Prompt" class="g5-prompt"></div>
+
         <div class="g5-input-row">
-          <input id="g5Input" type="text" autocomplete="off"
-                 placeholder="Den éischte Januar ..." />
+          <input id="g5Input" placeholder="Den éischten Januar ..." autocomplete="off"/>
         </div>
-        <div class="g5-keyboard" id="g5Keyboard"></div>
-        <div style="display:flex;gap:8px;margin-bottom:4px;">
+
+        <div id="g5Keyboard" class="g5-keyboard"></div>
+
+        <div style="display:flex;gap:8px;margin-bottom:6px;">
           <button id="g5CheckBtn" class="primary">Kontrolléier</button>
           <button id="g5NextBtn" class="secondary">Nächst</button>
         </div>
+
         <div id="g5Feedback" class="feedback"></div>
         <div id="g5Solution" class="solution"></div>
         <div id="g5Progress" class="progress"></div>
       </div>
     </section>
+
   </div>
 
-  <script>
+<script>
 /* ----------------------------------------------------------  
-   UNIVERSAL HELPERS  
+   HELPERS  
 -----------------------------------------------------------*/
 
-/* Shuffle helper */
-function shuffle(array){
-  return array.map(v=>({v,sort:Math.random()}))
-              .sort((a,b)=>a.sort-b.sort)
-              .map(({v})=>v);
+function shuffle(a){
+  return a.map(v=>({v,sort:Math.random()}))
+          .sort((a,b)=>a.sort-b.sort)
+          .map(o=>o.v);
 }
 
-/* Pad helper */
-function pad(num, len){
-  return num.toString().padStart(len,'0');
-}
+function pad(n,len){ return n.toString().padStart(len,'0'); }
 
 /* ----------------------------------------------------------  
-   LUXEMBOURGISH GRAMMAR ENGINE  
-   - Correct ordinals 1–31  
-   - Correct "den/de" rule  
-   - Correct month-based -n rule  
+   ORDINAL + GRAMMAR ENGINE  
 -----------------------------------------------------------*/
 
 const MONTHS = [
-  "Januar", "Februar", "Mäerz", "Abrëll", "Mee", "Juni",
-  "Juli", "August", "September", "Oktober", "November", "Dezember"
+  "Januar","Februar","Mäerz","Abrëll","Mee","Juni",
+  "Juli","August","September","Oktober","November","Dezember"
 ];
 
-/* Ordinals without month context */
 const ORDINAL = {
   1: "den éischten",
   2: "den zweeten",
@@ -617,66 +542,61 @@ const ORDINAL = {
   7: "de siwenten",
   8: "den aachten",
   9: "den néngten",
-  10: "den zéngten",
-  11: "den eeleften",
-  12: "den zwieleften",
-  13: "den dräizéngten",
-  14: "de véierzéngten",
-  15: "de fofzéngten",
-  16: "de siechzéngten",
-  17: "de siwwenzéngten",
-  18: "den uechtzéngten",
-  19: "den nonzéngten",
-  20: "den zwanzegsten",
-  21: "den eenanzwanzegsten",
-  22: "den zweeanzwanzegsten",
-  23: "den dräianzwanzegsten",
-  24: "den véieranzwanzegsten",
-  25: "den fënnefanzwanzegsten",
-  26: "den sechsanzwanzegsten",
-  27: "den siwenanzwanzegsten",
-  28: "den aachtanzwanzegsten",
-  29: "den nénganzwanzegsten",
-  30: "den drëssegsten",
-  31: "den eenendrëssegsten"
+  10:"den zéngten",
+  11:"den eeleften",
+  12:"den zwieleften",
+  13:"den dräizéngten",
+  14:"de véierzéngten",
+  15:"de fofzéngten",
+  16:"de siechzéngten",
+  17:"de siwwenzéngten",
+  18:"den uechtzéngten",
+  19:"den nonzéngten",
+  20:"den zwanzegsten",
+  21:"den eenanzwanzegsten",
+  22:"den zweeanzwanzegsten",
+  23:"den dräianzwanzegsten",
+  24:"den véieranzwanzegsten",
+  25:"den fënnefanzwanzegsten",
+  26:"den sechsanzwanzegsten",
+  27:"den siwenanzwanzegsten",
+  28:"den aachtanzwanzegsten",
+  29:"den nénganzwanzegsten",
+  30:"den drëssegsten",
+  31:"den eenendrëssegsten"
 };
 
-/* Letters that trigger “den” */
 const N_RULE = ["u","n","i","t","e","d","z","o","a","h","é"];
 
-/* Adjust ordinal with month-based -n rule */
 function applyMonthNRule(ordinal, monthName){
   const first = monthName.trim().toLowerCase()[0];
-  const requiresN = N_RULE.includes(first);
-
-  if(requiresN){
-    if(!ordinal.endsWith("n")) return ordinal + "n";
+  const needsN = N_RULE.includes(first);
+  if(needsN){
+    if(!ordinal.endsWith("n")) return ordinal+"n";
     return ordinal;
   } else {
-    if(ordinal.endsWith("n")){
+    if(ordinal.endsWith("n"))
       return ordinal.replace(/n$/, "");
-    }
     return ordinal;
   }
 }
 
-/* Convert 1–31 → full written date */
-function fullDateWritten(day, monthIdx){
+function fullWritten(day, mIdx){
   let base = ORDINAL[day];
-  let adjusted = applyMonthNRule(base, MONTHS[monthIdx]);
-  return `${adjusted} ${MONTHS[monthIdx]}`;
+  let adj = applyMonthNRule(base, MONTHS[mIdx]);
+  return `${adj} ${MONTHS[mIdx]}`;
 }
 
 /* ----------------------------------------------------------  
-   TOP BAR NAVIGATION  
+   NAV  
 -----------------------------------------------------------*/
 
 const games = document.querySelectorAll('.game');
-const topTitle = document.getElementById('topTitle');
-const topPrev = document.getElementById('topPrev');
-const topNext = document.getElementById('topNext');
+const topTitle=document.getElementById('topTitle');
+const topPrev=document.getElementById('topPrev');
+const topNext=document.getElementById('topNext');
 
-const gameTitles = [
+const gameTitles=[
   '1. Lauschter a klick',
   '2. Lies a klick',
   '3. Lies den Datum',
@@ -684,272 +604,409 @@ const gameTitles = [
   '5. Schreif den Datum'
 ];
 
-let currentGameIndex = 0;
+let currentGame=0;
 
-function setGame(index){
-  currentGameIndex = index;
+function setGame(i){
+  currentGame=i;
   games.forEach(g=>g.classList.remove('active'));
-  games[index].classList.add('active');
-  topTitle.textContent = gameTitles[index];
-  topPrev.disabled = index===0;
-  topNext.disabled = index===games.length-1;
+  games[i].classList.add('active');
+  topTitle.textContent=gameTitles[i];
+  topPrev.disabled=(i===0);
+  topNext.disabled=(i===4);
 }
 
-topPrev.onclick = ()=>{ if(currentGameIndex>0) setGame(currentGameIndex-1); };
-topNext.onclick = ()=>{ if(currentGameIndex<4) setGame(currentGameIndex+1); };
+topPrev.onclick=()=>{ if(currentGame>0)setGame(currentGame-1); };
+topNext.onclick=()=>{ if(currentGame<4)setGame(currentGame+1); };
 
 /* ----------------------------------------------------------  
-   GAME 1 — AUTOPLAY AUDIO + CALENDAR  
+   GAME 1  
 -----------------------------------------------------------*/
 
-const AUDIO_BASE_URL =
-  "https://github.com/albrechtclaire1007/p4kalenner/raw/refs/heads/main/";
-
-const g1Audio = new Audio();
-const g1PlayBtn = document.getElementById('g1PlayBtn');
-const g1NextBtn = document.getElementById('g1NextBtn');
-const g1Feedback = document.getElementById('g1Feedback');
-const g1CalGrid = document.getElementById('g1CalGrid');
-
-const g1Days = [];
-for(let d=1; d<=31; d++){
-  const btn=document.createElement('button');
-  btn.className='g1-day';
-  btn.textContent=d;
-  btn.dataset.day=d;
-  g1CalGrid.appendChild(btn);
-  g1Days.push(btn);
-}
-
-let g1CurrentDay=null;
+const AUDIO_BASE = "https://github.com/albrechtclaire1007/p4kalenner/raw/refs/heads/main/";
+const g1Audio=new Audio();
+const g1Play=document.getElementById('g1PlayBtn');
+const g1Next=document.getElementById('g1NextBtn');
+const g1Feedback=document.getElementById('g1Feedback');
+const g1CalGrid=document.getElementById('g1CalGrid');
+let g1Days=[];
+let g1Current=null;
 let g1Locked=false;
 
-function g1SetTask(){
-  g1Locked=false;
-  g1Feedback.textContent='Lauschter an da klick op den Datum.';
-  g1Days.forEach(c=>c.classList.remove('correct','wrong'));
-
-  g1CurrentDay = Math.floor(Math.random()*31)+1;
-  const file = `P4__${g1CurrentDay}..mp3`;
-  g1Audio.src = AUDIO_BASE_URL + file;
-
-  /* Browser-safe autoplay */
-  g1Audio.play().catch(()=>{
-    // will play when user touches screen
-  });
+for(let d=1;d<=31;d++){
+  const b=document.createElement('button');
+  b.className='g1-day';
+  b.textContent=d;
+  b.dataset.day=d;
+  g1CalGrid.appendChild(b);
+  g1Days.push(b);
 }
 
-g1PlayBtn.onclick = ()=>{
-  g1Audio.currentTime=0;
-  g1Audio.play();
-};
+function g1New(){
+  g1Locked=false;
+  g1Feedback.textContent="";
+  g1Days.forEach(b=>b.classList.remove('correct','wrong'));
 
-g1Days.forEach(btn=>{
-  btn.onclick = ()=>{
-    if(g1Locked) return;
-    const chosen = Number(btn.dataset.day);
-    if(chosen===g1CurrentDay){
-      btn.classList.add('correct');
-      g1Feedback.textContent=`Super! Dat war den ${chosen}.`;
+  g1Current=Math.floor(Math.random()*31)+1;
+  g1Audio.src=AUDIO_BASE+`P4__${g1Current}..mp3`;
+  g1Audio.play().catch(()=>{});
+}
+g1Play.onclick=()=>{ g1Audio.currentTime=0; g1Audio.play(); };
+g1Next.onclick=g1New;
+
+g1Days.forEach(b=>{
+  b.onclick=()=>{
+    if(g1Locked)return;
+    const pick=+b.dataset.day;
+    if(pick===g1Current){
+      b.classList.add('correct');
+      g1Feedback.textContent=`Super!`;
       g1Locked=true;
     } else {
-      btn.classList.add('wrong');
-      setTimeout(()=>btn.classList.remove('wrong'),200);
-      g1Feedback.textContent="Nee, nach eng Kéier.";
+      b.classList.add('wrong');
+      setTimeout(()=>b.classList.remove('wrong'),200);
+      g1Feedback.textContent="Nee.";
     }
   };
 });
 
-g1NextBtn.onclick = g1SetTask;
-g1SetTask();
+g1New();
 
 /* ----------------------------------------------------------  
-   GAME 2 — NEW CHECK BUTTON + DISPLAY SPELL-OUT  
+   GAME 2  
 -----------------------------------------------------------*/
 
-const g2QuestionEl = document.getElementById('g2Question');
-const g2OptionsEl = document.getElementById('g2Options');
-const g2Feedback = document.getElementById('g2Feedback');
+const g2Question=document.getElementById('g2Question');
+const g2Options=document.getElementById('g2Options');
+const g2Feedback=document.getElementById('g2Feedback');
+const g2CheckW=document.getElementById('g2CheckWritten');
+const g2Next=document.getElementById('g2NextBtn');
 
-const g2NextBtn = document.getElementById('g2NextBtn');
-
-/* NEW BUTTON */
-const g2CheckWrittenBtn = document.createElement('button');
-g2CheckWrittenBtn.textContent = "Weis mer de geschriwwenen Datum";
-g2CheckWrittenBtn.className = "secondary";
-g2CheckWrittenBtn.style.marginTop = "6px";
-g2QuestionEl.parentNode.appendChild(g2CheckWrittenBtn);
-
-/* Build 1–31 tasks with months */
-let g2Tasks = [];
+let g2Tasks=[];
 for(let i=0;i<25;i++){
-  const day = Math.floor(Math.random()*31)+1;
-  const monthIdx = Math.floor(Math.random()*12);
+  const d=Math.floor(Math.random()*31)+1;
+  const m=Math.floor(Math.random()*12);
+  const spelled=fullWritten(d,m);
+  const correct=`${pad(d,2)}.${pad(m+1,2)}.`;
 
-  const text = fullDateWritten(day, monthIdx);
-  const correct = `${pad(day,2)}.${pad(monthIdx+1,2)}.`;
-
-  const others = [];
+  const others=[];
   while(others.length<4){
-    let d2=Math.floor(Math.random()*31)+1;
-    let m2=Math.floor(Math.random()*12);
-    let w=`${pad(d2,2)}.${pad(m2+1,2)}.`;
-    if(w!==correct && !others.includes(w)) others.push(w);
+    const d2=Math.floor(Math.random()*31)+1;
+    const m2=Math.floor(Math.random()*12);
+    const num=`${pad(d2,2)}.${pad(m2+1,2)}.`;
+    if(num!==correct && !others.includes(num)) others.push(num);
   }
-
-  g2Tasks.push({day,monthIdx,text,correct,others});
+  g2Tasks.push({day:d,month:m,spelled,correct,others});
 }
 
-let g2Order = shuffle([...Array(g2Tasks.length).keys()]);
-let g2Index = 0;
-let g2CurrentTask = null;
+let g2Order=shuffle([...Array(g2Tasks.length).keys()]);
+let g2Index=0;
+let g2Current=null;
 
-function g2RenderTask(){
+function g2Render(){
   g2Feedback.textContent="";
-  g2OptionsEl.innerHTML="";
-  g2CheckWrittenBtn.onclick = null;
+  g2Options.innerHTML="";
 
-  const idx = g2Order[g2Index];
-  g2CurrentTask = g2Tasks[idx];
+  const idx=g2Order[g2Index];
+  g2Current=g2Tasks[idx];
 
-  g2QuestionEl.textContent = g2CurrentTask.text;
+  g2Question.textContent=g2Current.spelled;
 
-  const opts = shuffle([g2CurrentTask.correct, ...g2CurrentTask.others]);
-
-  opts.forEach(opt=>{
+  const all=[g2Current.correct, ...g2Current.others];
+  shuffle(all).forEach(opt=>{
     const b=document.createElement('button');
     b.textContent=opt;
     b.onclick=()=>{
-      [...g2OptionsEl.children].forEach(btn=>btn.disabled=true);
-
-      if(opt===g2CurrentTask.correct){
-        b.classList.add("correct");
+      [...g2Options.children].forEach(x=>x.disabled=true);
+      if(opt===g2Current.correct){
+        b.classList.add('correct');
         g2Feedback.textContent="Super!";
-        g2Feedback.className="feedback ok";
+        g2Feedback.className='feedback ok';
       } else {
-        b.classList.add("wrong");
-        g2Feedback.textContent=
-          `Nee, richteg wier: ${g2CurrentTask.correct}`;
-        g2Feedback.className="feedback bad";
-        [...g2OptionsEl.children].forEach(btn=>{
-          if(btn.textContent===g2CurrentTask.correct){
-            btn.classList.add("correct");
-          }
+        b.classList.add('wrong');
+        g2Feedback.textContent=`Nee. Richteg: ${g2Current.correct}`;
+        g2Feedback.className='feedback bad';
+        [...g2Options.children].forEach(x=>{
+          if(x.textContent===g2Current.correct)x.classList.add('correct');
         });
       }
     };
-    g2OptionsEl.appendChild(b);
+    g2Options.appendChild(b);
   });
 
-  /* NEW — Show spelled-out date */
-  g2CheckWrittenBtn.onclick = ()=>{
-    const spelled = fullDateWritten(
-      g2CurrentTask.day,
-      g2CurrentTask.monthIdx
-    );
-    g2Feedback.textContent = spelled;
-    g2Feedback.className = "feedback ok";
+  g2CheckW.onclick = ()=>{
+    g2Feedback.textContent = fullWritten(g2Current.day,g2Current.month);
+    g2Feedback.className = 'feedback ok';
   };
 }
 
-g2NextBtn.onclick = ()=>{
+g2Next.onclick=()=>{
   g2Index++;
   if(g2Index>=g2Order.length){
-    g2Order = shuffle([...Array(g2Tasks.length).keys()]);
+    g2Order=shuffle([...Array(g2Tasks.length).keys()]);
     g2Index=0;
   }
-  g2RenderTask();
+  g2Render();
 };
 
-g2RenderTask();
+g2Render();
 
 /* ----------------------------------------------------------  
-   GAME 3 — WHEELS + NEW BIG DATE DISPLAY  
+   GAME 3  
 -----------------------------------------------------------*/
 
-const g3Wheels = document.querySelectorAll('.wheel');
-const g3PrevBtn = document.getElementById('g3PrevBtn');
-const g3NextBtn = document.getElementById('g3NextBtn');
-
-/* NEW: Big date display pill */
-const g3Display = document.createElement('div');
-g3Display.style.marginBottom="10px";
-g3Display.style.padding="8px 14px";
-g3Display.style.borderRadius="999px";
-g3Display.style.fontSize="1.6rem";
-g3Display.style.background="#fff";
-g3Display.style.border="2px solid var(--purple-mid)";
-g3Display.style.boxShadow="0 4px 12px rgba(0,0,0,0.10)";
-document.getElementById('game3').querySelector('.g3-display')
-  .insertBefore(g3Display,
-                document.getElementById('game3').querySelector('.wheels'));
+const g3Big=document.getElementById('g3Big');
+const g3Wheels=document.querySelectorAll('#g3Wheels .wheel');
+const g3Prev=document.getElementById('g3PrevBtn');
+const g3Next=document.getElementById('g3NextBtn');
 
 function daysInMonth(m,y){ return new Date(y,m,0).getDate(); }
 
-let g3History=[];
-let g3Pointer=-1;
+let g3Hist=[];
+let g3Ptr=-1;
 
 function randomDate(){
   const y=2000+Math.floor(Math.random()*30);
   const m=1+Math.floor(Math.random()*12);
   const d=1+Math.floor(Math.random()*daysInMonth(m,y));
-  return {day:d,month:m,year:y};
+  return {d,m,y};
 }
 
-function digitsFrom(d){
-  return `${pad(d.day,2)}${pad(d.month,2)}${pad(d.year,4)}`.split("");
+function digitsOf(obj){
+  return `${pad(obj.d,2)}${pad(obj.m,2)}${obj.y}`.split("");
 }
 
-function setBigDate(d){
-  g3Display.textContent = `${pad(d.day,2)}.${pad(d.month,2)}.${d.year}`;
+function animateWheel(w,digit){
+  const s=w.querySelector('span');
+  s.style.animation='none';
+  s.offsetHeight;
+  s.textContent=digit;
+  s.style.animation='wheelSpin .25s ease-out';
 }
 
-function animateWheel(w,i){
-  const span=w.querySelector('span');
-  span.style.animation="none";
-  span.offsetHeight;
-  span.textContent=i;
-  span.style.animation="wheelSpin .25s ease-out";
-}
-
-function showDate(d,push=true){
-  const dig=digitsFrom(d);
+function showG3(obj,push=true){
+  const dig=digitsOf(obj);
   g3Wheels.forEach((w,i)=>animateWheel(w,dig[i]));
-  setBigDate(d);
+  g3Big.textContent = `${pad(obj.d,2)}.${pad(obj.m,2)}.${obj.y}`;
 
   if(push){
-    g3History.splice(g3Pointer+1);
-    g3History.push(d);
-    g3Pointer=g3History.length-1;
+    g3Hist.splice(g3Ptr+1);
+    g3Hist.push(obj);
+    g3Ptr=g3Hist.length-1;
   }
-  g3PrevBtn.disabled = g3Pointer<=0;
+  g3Prev.disabled=(g3Ptr<=0);
 }
 
-g3NextBtn.onclick = ()=>showDate(randomDate(),true);
-g3PrevBtn.onclick = ()=>{
-  if(g3Pointer>0){
-    g3Pointer--;
-    showDate(g3History[g3Pointer],false);
+g3Next.onclick=()=>showG3(randomDate(),true);
+g3Prev.onclick=()=>{
+  if(g3Ptr>0){
+    g3Ptr--;
+    showG3(g3Hist[g3Ptr],false);
   }
 };
 
-showDate(randomDate(),true);
+showG3(randomDate(),true);
 
 /* ----------------------------------------------------------  
-   GAME 4 — Matching (unchanged except grammar handled above)  
+   GAME 4  
 -----------------------------------------------------------*/
 
+const g4List=document.getElementById('g4List');
+const g4Cards=document.getElementById('g4Cards');
+const g4Feedback=document.getElementById('g4Feedback');
+const g4Reset=document.getElementById('g4ResetBtn');
+
+let g4Pairs=[];
+for(let i=0;i<20;i++){
+  const d=Math.floor(Math.random()*31)+1;
+  const m=Math.floor(Math.random()*12);
+  g4Pairs.push({
+    id:i+1,
+    text:fullWritten(d,m),
+    num:`${pad(d,2)}.${pad(m+1,2)}.`
+  });
+}
+
+function g4Render(){
+  g4Feedback.textContent="";
+  g4List.innerHTML="";
+  g4Cards.innerHTML="";
+  let selected=null;
+
+  const order=shuffle([...g4Pairs]);
+  order.forEach(p=>{
+    const item=document.createElement('div');
+    item.className='g4-item';
+    item.dataset.id=p.id;
+    item.textContent=p.text;
+    item.onclick=()=>{
+      [...g4List.children].forEach(x=>x.classList.remove('selected'));
+      if(!item.classList.contains('matched')){
+        item.classList.add('selected');
+        selected=p.id;
+      }
+    };
+    g4List.appendChild(item);
+  });
+
+  const cards=shuffle([...g4Pairs]);
+  cards.forEach(p=>{
+    const c=document.createElement('div');
+    c.className='g4-card';
+    c.dataset.id=p.id;
+    c.textContent=p.num;
+    c.onclick=()=>{
+      if(c.classList.contains('used'))return;
+      if(!selected){
+        g4Feedback.textContent="Wielt fir d'éischt e Saz.";
+        g4Feedback.className='feedback bad';
+        return;
+      }
+      if(selected==p.id){
+        c.classList.add('used');
+        const match=g4List.querySelector(`[data-id="${p.id}"]`);
+        match.classList.add('matched');
+        g4Feedback.textContent="Super!";
+        g4Feedback.className='feedback ok';
+        selected=null;
+      } else {
+        g4Feedback.textContent="Nee.";
+        g4Feedback.className='feedback bad';
+      }
+    };
+    g4Cards.appendChild(c);
+  });
+}
+g4Reset.onclick=g4Render;
 g4Render();
 
 /* ----------------------------------------------------------  
-   GAME 5 — Writing (ordinal logic now handled by grammar engine)  
+   GAME 5  
 -----------------------------------------------------------*/
 
-g5RenderTask();
+const g5Prompt=document.getElementById('g5Prompt');
+const g5Input=document.getElementById('g5Input');
+const g5Keyboard=document.getElementById('g5Keyboard');
+const g5Check=document.getElementById('g5CheckBtn');
+const g5Next=document.getElementById('g5NextBtn');
+const g5Feedback=document.getElementById('g5Feedback');
+const g5Solution=document.getElementById('g5Solution');
+const g5Progress=document.getElementById('g5Progress');
 
-/* Start at game 1 */
+let g5Tasks=[];
+for(let i=0;i<20;i++){
+  const d=Math.floor(Math.random()*31)+1;
+  const m=Math.floor(Math.random()*12);
+  g5Tasks.push({
+    prompt:`${pad(d,2)}.${pad(m+1,2)}.`,
+    solution:fullWritten(d,m)
+  });
+}
+
+let g5Order=shuffle([...Array(g5Tasks.length).keys()]);
+let g5Index=0;
+
+function norm(s){
+  return s.toLowerCase().trim().replace(/\s+/g,' ');
+}
+
+function g5Render(){
+  const t=g5Tasks[g5Order[g5Index]];
+  g5Prompt.textContent=`Schreiw: ${t.prompt}`;
+  g5Input.value="";
+  g5Feedback.textContent="";
+  g5Solution.textContent="";
+  g5Progress.textContent=`${g5Index+1} / ${g5Tasks.length}`;
+  g5Input.focus();
+}
+
+g5Check.onclick=()=>{
+  const t=g5Tasks[g5Order[g5Index]];
+  const user=norm(g5Input.value);
+  const corr=norm(t.solution);
+  if(!user){
+    g5Feedback.textContent="Schreiw eppes.";
+    g5Feedback.className='feedback bad';
+    return;
+  }
+  if(user===corr){
+    g5Feedback.textContent="Super!";
+    g5Feedback.className='feedback ok';
+  } else {
+    g5Feedback.textContent="Net ganz richteg.";
+    g5Feedback.className='feedback bad';
+    g5Solution.textContent=`Sou schreiwe mir et: ${t.solution}`;
+  }
+};
+
+g5Next.onclick=()=>{
+  g5Index++;
+  if(g5Index>=g5Order.length){
+    g5Order=shuffle([...Array(g5Tasks.length).keys()]);
+    g5Index=0;
+  }
+  g5Render();
+};
+
+/* Keyboard */
+const rows=[
+  ['q','w','e','r','t','z','u','i','o','p','ü','é'],
+  ['a','s','d','f','g','h','j','k','l','ë','ä'],
+  ['y','x','c','v','b','n','m'],
+  ['SHIFT','SPACE','BACK']
+];
+
+let shift=false;
+
+function updateKeys(){
+  document.querySelectorAll('.g5-key').forEach(btn=>{
+    const key=btn.dataset.key;
+    if(key==='SHIFT'){
+      btn.classList.toggle('shift-active',shift);
+      btn.textContent='SHIFT';
+    } else if(key==='SPACE'){
+      btn.textContent='␣';
+    } else if(key==='BACK'){
+      btn.textContent='⌫';
+    } else {
+      btn.textContent = shift ? key.toUpperCase() : key.toLowerCase();
+    }
+  });
+}
+
+function addKey(k,wide=false){
+  const b=document.createElement('button');
+  b.className='g5-key'+(wide?' wide':'');
+  b.dataset.key=k;
+  b.onclick=()=>{
+    if(k==='SHIFT'){ shift=!shift; updateKeys(); return; }
+    if(k==='SPACE'){ g5Input.value+=' '; return; }
+    if(k==='BACK'){ g5Input.value=g5Input.value.slice(0,-1); return; }
+    const letter = shift ? k.toUpperCase() : k.toLowerCase();
+    g5Input.value += letter;
+    if(shift){ shift=false; updateKeys(); }
+    g5Input.focus();
+  };
+  return b;
+}
+
+rows.forEach(row=>{
+  const div=document.createElement('div');
+  div.className='g5-row';
+  row.forEach(k=>{
+    const wide=(k==='SPACE'||k==='BACK'||k==='SHIFT');
+    div.appendChild(addKey(k,wide));
+  });
+  g5Keyboard.appendChild(div);
+});
+
+updateKeys();
+g5Render();
+
+/* Start */
 setGame(0);
+
 </script>
+
 </body>
 </html>
 
